@@ -42,10 +42,6 @@ class QuestionsController < ApplicationController
 
   helper_method :question
 
-  def load_question
-    @question = Question.find(params[:id])
-  end
-
   def question_params
     params.require(:question).permit(:title, :body)
   end
