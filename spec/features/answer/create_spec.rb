@@ -21,8 +21,8 @@ feature 'User can create an answer to the question', "
       click_button 'Post Your Answer'
 
       expect(page).to have_content 'Your answer successfully created!'
-      # expect(page).to have_content question.title
-      # expect(page).to have_content 'Test answer'
+      expect(page).to have_content question.title
+      expect(page).to have_content 'Test answer'
     end
 
     scenario 'answers the question with errors' do

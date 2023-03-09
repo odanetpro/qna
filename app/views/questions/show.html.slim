@@ -1,4 +1,7 @@
 h1= question.title
 p= question.body
 
+ol
+  = render question.answers[0..-2]
+
 = render 'answers/form'
