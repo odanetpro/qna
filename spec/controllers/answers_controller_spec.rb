@@ -4,14 +4,14 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
-  let(:answer) { question.create(:answer) }
+  let(:answer) { create(:answer) }
   let(:user) { create(:user) }
 
   before { login(user) }
 
   describe 'GET #show' do
     it 'renders show view' do
-      get :show, params: { id: question }
+      get :show, params: { id: answer }
       expect(response).to render_template :show
     end
   end
