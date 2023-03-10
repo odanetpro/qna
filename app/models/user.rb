@@ -7,4 +7,5 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :answers, foreign_key: 'author_id', dependent: :destroy, inverse_of: :author
+  has_many :questions, foreign_key: 'author_id', dependent: :destroy, inverse_of: :author
 end
