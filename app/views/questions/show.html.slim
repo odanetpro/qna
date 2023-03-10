@@ -1,6 +1,12 @@
 h1= question.title
 p= question.body
 
+- if question.author_id == current_user&.id
+  = link_to 'Delete Question',
+            question_path(question),
+            method: :delete,
+            data: { confirm: t('.confirm') }
+
 ol
   = render question.answers[0..-2]
 

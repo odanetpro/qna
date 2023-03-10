@@ -34,8 +34,12 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    question.destroy
-    redirect_to questions_path
+    if question.author_id == current_user&.id
+      question.destroy
+      redirect_to questions_path, notice: 'Your question deleted.'
+    else
+      redirect_to questions_path, alert: "No rights to delete someone else's question."
+    end
   end
 
   private
@@ -47,6 +51,6 @@ class QuestionsController < ApplicationController
   helper_method :question
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body).merge(author_id: current_user.id)
   end
 end
