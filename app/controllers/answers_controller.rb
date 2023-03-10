@@ -15,10 +15,19 @@ class AnswersController < ApplicationController
     end
   end
 
+  def destroy
+    if answer.author_id == current_user&.id
+      answer.destroy
+      redirect_to answer.question, notice: 'Your answer deleted.'
+    else
+      redirect_to answer.question, alert: "No rights to delete someone else's answer."
+    end
+  end
+
   private
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body).merge(author_id: current_user.id)
   end
 
   def question
