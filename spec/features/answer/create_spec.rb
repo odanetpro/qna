@@ -20,9 +20,14 @@ feature 'User can create an answer to the question', "
       fill_in 'answer[body]', with: 'Test answer'
       click_button 'Post Your Answer'
 
+      expect(current_path).to eq question_path(question)
+
       expect(page).to have_content 'Your answer successfully created!'
       expect(page).to have_content question.title
-      expect(page).to have_content 'Test answer'
+
+      within '.answers' do
+        expect(page).to have_content 'Test answer'
+      end
     end
 
     scenario 'answers the question with errors' do

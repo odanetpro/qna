@@ -7,7 +7,8 @@ p= question.body
             method: :delete,
             data: { confirm: t('.confirm') }
 
-ol
-  = render question.answers[0..-2]
+.answers
+  ol
+    = render question.answers[0..-2]
 
 = render 'answers/form'
