@@ -9,6 +9,14 @@ class AnswersController < ApplicationController
     @answer = question.answers.create(answer_params)
   end
 
+  def update
+    if answer.author_id == current_user&.id
+      answer.update(answer_params)
+    else
+      redirect_to answer.question, alert: "No rights to edit someone else's answer.", format: 'js'
+    end
+  end
+
   def destroy
     if answer.author_id == current_user&.id
       answer.destroy
