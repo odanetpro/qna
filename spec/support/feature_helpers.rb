@@ -8,4 +8,8 @@ module FeatureHelpers
     fill_in 'Password', with: user.password
     click_on 'Log in'
   end
+
+  def delete(path)
+    page.execute_script("$.ajax('#{path}', { type : 'DELETE' })")
+  end
 end

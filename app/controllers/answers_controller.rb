@@ -20,9 +20,8 @@ class AnswersController < ApplicationController
   def destroy
     if answer.author_id == current_user&.id
       answer.destroy
-      redirect_to answer.question, notice: 'Your answer deleted.'
     else
-      redirect_to answer.question, alert: "No rights to delete someone else's answer."
+      redirect_to answer.question, alert: "No rights to delete someone else's answer.", format: 'js'
     end
   end
 

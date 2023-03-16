@@ -10,36 +10,43 @@ feature "Author can delete his own answer, but can't delete someone else's answe
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     background do
       sign_in(user)
     end
 
     scenario 'tries to delete his own answer' do
-      create(:answer, question: question, author: user)
+      answer = create(:answer, question: question, author: user)
 
       visit question_path(question)
-      click_on 'Delete'
+      accept_confirm do
+        click_on 'Delete'
+      end
 
       expect(page).to have_content 'Your answer deleted.'
+      expect(page).to_not have_content answer.body
     end
 
     scenario "tries to delete someone else's answer" do
       someone_else_answer = create(:answer, question: question, author: create(:user))
 
-      visit question_path(question)
-      page.driver.submit :delete, answer_path(someone_else_answer), {}
+      delete(answer_path(someone_else_answer))
 
       expect(page).to have_content "No rights to delete someone else's answer."
+      within '.answers' do
+        expect(page).to have_content someone_else_answer.body
+      end
     end
   end
 
-  scenario 'Unauthenticated user tries to delete the answer' do
+  scenario 'Unauthenticated user tries to delete the answer', js: true do
     answer = create(:answer, question: question, author: user)
 
     visit question_path(question)
-    page.driver.submit :delete, answer_path(answer), {}
+    delete(answer_path(answer))
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    within '.answers' do
+      expect(page).to have_content answer.body
+    end
   end
 end
