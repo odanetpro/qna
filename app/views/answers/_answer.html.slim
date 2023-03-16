@@ -1,6 +1,4 @@
 li class = "answer-#{answer.id}"
-  = 'Answer'
-
   div id = "answer-errors-#{answer.id}"
 
   div id = "answer-body-#{answer.id}"
@@ -12,9 +10,9 @@ li class = "answer-#{answer.id}"
     = link_to 'Delete',
               answer_path(answer),
               method: :delete,
+              remote: true,
               class: 'delete-answer-link',
-              data: { confirm: t('.confirm'),
-                      answer_id: answer.id }
+              data: { confirm: t('.confirm') }
     
   = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
     = f.text_area :body
