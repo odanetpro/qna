@@ -15,7 +15,9 @@ feature "Author can delete his own question, but can't delete someone else's que
 
     scenario 'tries to delete his own question' do
       visit question_path(question)
-      click_on 'Delete Question'
+      within '.question' do
+        click_on 'Delete'
+      end
 
       expect(page).to have_content 'Your question deleted.'
     end
