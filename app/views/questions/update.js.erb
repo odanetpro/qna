@@ -1,0 +1,10 @@
+$('.question-errors').html('<%= render 'shared/errors', resource: question %>')
+
+<% unless question.errors.present? %>
+  $('.question').children('h1').html('<%= j question.title %>')
+  $('.question').children('#question-body').html('<%= j question.body %>')
+
+  $('form#edit-question').addClass('hidden')
+  $('.edit-question-link').removeClass('hidden')
+  $('.delete-question-link').removeClass('hidden')
+<% end %>

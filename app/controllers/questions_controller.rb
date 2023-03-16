@@ -13,8 +13,6 @@ class QuestionsController < ApplicationController
 
   def new; end
 
-  def edit; end
-
   def create
     @question = Question.new(question_params)
 
@@ -26,10 +24,10 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if question.update(question_params)
-      redirect_to question
+    if question.author_id == current_user&.id
+      question.update(question_params)
     else
-      render :edit
+      redirect_to question, alert: "No rights to edit someone else's question.", format: 'js'
     end
   end
 
