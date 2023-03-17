@@ -25,6 +25,12 @@ class AnswersController < ApplicationController
     end
   end
 
+  def mark_best
+    return unless answer.question.author_id == current_user&.id
+
+    answer.mark_as_best
+  end
+
   private
 
   def answer_params

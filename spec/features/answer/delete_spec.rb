@@ -27,6 +27,19 @@ feature "Author can delete his own answer, but can't delete someone else's answe
       expect(page).to_not have_content answer.body
     end
 
+    scenario 'tries to delete his own best answer' do
+      answer = create(:answer, question: question, author: user)
+      answer.mark_as_best
+
+      visit question_path(question)
+      accept_confirm do
+        click_on 'Delete'
+      end
+
+      expect(page).to have_content 'Your answer deleted.'
+      expect(page).to_not have_content answer.body
+    end
+
     scenario "tries to delete someone else's answer" do
       someone_else_answer = create(:answer, question: question, author: create(:user))
 

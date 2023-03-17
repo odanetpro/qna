@@ -9,6 +9,10 @@ module FeatureHelpers
     click_on 'Log in'
   end
 
+  def post(path)
+    page.execute_script("$.ajax('#{path}', { type : 'POST' })")
+  end
+
   def delete(path)
     page.execute_script("$.ajax('#{path}', { type : 'DELETE' })")
   end

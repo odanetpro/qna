@@ -79,4 +79,37 @@ RSpec.describe AnswersController, type: :controller do
       expect(response).to render_template :destroy
     end
   end
+
+  describe 'POST #mark_best' do
+    it 'author of question marks the answer as best' do
+      question = create(:question, author: user)
+      answer = create(:answer, question: question)
+
+      post :mark_best, params: { id: answer }, format: :js
+      question.reload
+
+      expect(question.best_answer).to eq answer
+    end
+
+    it 'not author of question marks the answer as best' do
+      question = create(:question)
+      answer = create(:answer, question: question)
+
+      post :mark_best, params: { id: answer }, format: :js
+      question.reload
+
+      expect(question.best_answer).to be_nil
+    end
+
+    it 'unauthenticated user tries to mark the answer as best' do
+      question = create(:question, author: user)
+      answer = create(:answer, question: question)
+
+      logout(user)
+      post :mark_best, params: { id: answer }, format: :js
+      question.reload
+
+      expect(question.best_answer).to be_nil
+    end
+  end
 end
