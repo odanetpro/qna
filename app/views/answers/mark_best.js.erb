@@ -1,3 +1,4 @@
 <% if answer.question.best_answer == answer %>
-  $('.<%="answer-#{answer.id}" %>').addClass('best-answer')
+  $('.answers').html('<%= j render partial: 'answers/best_answer', locals: { answer: answer.question.best_answer } %>' +
+                     '<%= j render partial: 'answers/answer', collection: answer.question.other_answers %>')
 <% end %>
