@@ -3,8 +3,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
 
-  def show; end
-
   def create
     @answer = question.answers.create(answer_params)
   end

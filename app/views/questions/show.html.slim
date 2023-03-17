@@ -28,6 +28,7 @@
 
 p= 'Answers'
 ol.answers
-  = render question.answers[0..-2]
+  = render partial: 'answers/best_answer', locals: { answer: question.best_answer } if question.best_answer
+  = render partial: 'answers/answer', collection: question.other_answers
 
 = render 'answers/form'

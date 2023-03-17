@@ -13,7 +13,7 @@ li class = "answer-#{answer.id}"
               remote: true,
               class: 'delete-answer-link',
               data: { confirm: t('.confirm') }
-  - if question.author_id == current_user&.id
+  - if answer.question.author_id == current_user&.id
     |  
     = link_to 'Best',
               mark_best_answer_path(answer),

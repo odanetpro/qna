@@ -11,4 +11,8 @@ class Question < ApplicationRecord
     self.best_answer = nil
     save!
   end
+
+  def other_answers
+    answers.where.not(id: best_answer_id)
+  end
 end
