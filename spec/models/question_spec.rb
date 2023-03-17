@@ -19,4 +19,13 @@ RSpec.describe Question, type: :model do
 
     expect(question.best_answer).to be_nil
   end
+
+  it 'should return answers other than the best' do
+    question = create(:question)
+    answers = []
+    3.times { answers << create(:answer, question: question) }
+    answers[0].mark_as_best
+
+    expect(question.other_answers).to eq answers[1..]
+  end
 end
