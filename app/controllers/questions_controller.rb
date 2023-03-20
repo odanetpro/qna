@@ -49,6 +49,6 @@ class QuestionsController < ApplicationController
   helper_method :question
 
   def question_params
-    params.require(:question).permit(:title, :body).merge(author_id: current_user.id)
+    params.require(:question).permit(:title, :body, :file).merge(author_id: current_user.id)
   end
 end
