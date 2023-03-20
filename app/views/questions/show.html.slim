@@ -3,6 +3,9 @@
   div id = "question-body"
     = question.body
 
+  - if question.file.attached?
+    p= link_to question.file.filename.to_s, url_for(question.file)
+
   .question-controls
     - if question.author_id == current_user&.id
       = link_to 'Edit', '#', class: 'edit-question-link'
