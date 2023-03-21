@@ -32,7 +32,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body).merge(author_id: current_user.id)
+    params.require(:answer).permit(:body, files: []).merge(author_id: current_user.id)
   end
 
   def question
@@ -40,7 +40,7 @@ class AnswersController < ApplicationController
   end
 
   def answer
-    @answer ||= params[:id] ? Answer.find(params[:id]) : question.answers.build
+    @answer ||= params[:id] ? Answer.with_attached_files.find(params[:id]) : question.answers.build
   end
 
   helper_method :answer, :question

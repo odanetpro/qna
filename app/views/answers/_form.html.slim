@@ -5,4 +5,8 @@
   .answer-errors-new
 
   = f.text_area :body
+  p
+    = f.label :files
+    br
+    = f.file_field :files, multiple: true
   p= f.submit 'Post Your Answer'
