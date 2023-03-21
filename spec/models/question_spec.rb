@@ -32,4 +32,25 @@ RSpec.describe Question, type: :model do
   it 'have many attached files' do
     expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
+
+  it 'should return best answer' do
+    question = create(:question)
+    answer = create(:answer, question: question)
+    answer.mark_as_best
+
+    expect(question.best_answer).to eq answer
+  end
+
+  it 'should return all answers' do
+    question = create(:question)
+    answers = []
+    3.times { answers << create(:answer, question: question) }
+
+    expect(question.answers).to eq answers
+  end
+
+  it 'should return empty array of answers' do
+    question = create(:question)
+    expect(question.answers).to eq []
+  end
 end
