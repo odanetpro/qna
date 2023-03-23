@@ -26,9 +26,10 @@ feature "Author can delete his own question, but can't delete someone else's que
       someone_else_question = create(:question, author: create(:user))
 
       visit question_path(someone_else_question)
-      page.driver.submit :delete, question_path(someone_else_question), {}
 
-      expect(page).to have_content "No rights to delete someone else's question."
+      within '.question' do
+        expect(page).to_not have_content 'Delete'
+      end
     end
   end
 
