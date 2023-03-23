@@ -8,11 +8,10 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if answer.author_id == current_user&.id
-      answer.update(answer_params)
-    else
-      redirect_to answer.question, alert: "No rights to edit someone else's answer.", format: 'js'
-    end
+    return unless answer.author_id == current_user&.id
+
+    answer.files.attach(answer_params['files']) if answer_params['files']
+    answer.update(answer_params.except(:files))
   end
 
   def destroy
