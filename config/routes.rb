@@ -11,5 +11,9 @@ Rails.application.routes.draw do
         post :mark_best
       end
     end
+
+    member do
+      delete 'delete_file/:file_id', action: :delete_file, as: :delete_file
+    end
   end
 end

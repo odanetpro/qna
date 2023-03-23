@@ -5,8 +5,7 @@
 
   .question-attachments
     - if question.files.attached?
-      - question.files.each do |file|
-        p= link_to file.filename.to_s, url_for(file)
+      = render partial: 'questions/file', collection: question.files
 
   .question-controls
     - if question.author_id == current_user&.id
