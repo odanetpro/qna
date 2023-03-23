@@ -39,6 +39,13 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def delete_file
+    return unless question.author_id == current_user&.id
+
+    @attached_file = question.files.find_by(id: params[:file_id])
+    @attached_file.purge
+  end
+
   private
 
   def question

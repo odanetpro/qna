@@ -117,4 +117,40 @@ RSpec.describe QuestionsController, type: :controller do
       expect(response).to redirect_to questions_path
     end
   end
+
+  describe 'DELETE #delete_file' do
+    let(:file) { Rack::Test::UploadedFile.new(Rails.root.join('spec/rails_helper.rb')) }
+
+    describe 'Authenticated user' do
+      before { login(user) }
+
+      it 'deletes attached file' do
+        question = create(:question, author: user)
+        question.files.attach(file)
+
+        expect do
+          delete :delete_file, params: { id: question, file_id: question.files.first },
+                               format: :js
+        end.to change(question.files, :count).by(-1)
+      end
+
+      it 'tries to delete some one else attached file' do
+        other_question = create(:question)
+        other_question.files.attach(file)
+
+        expect do
+          delete :delete_file, params: { id: other_question, file_id: other_question.files.first }, format: :js
+        end.to change(other_question.files, :count).by(0)
+      end
+    end
+
+    it 'Unauthenticated user tries to delete attached file' do
+      question = create(:question, author: user)
+      question.files.attach(file)
+
+      expect do
+        delete :delete_file, params: { id: question, file_id: question.files.first }, format: :js
+      end.to change(question.files, :count).by(0)
+    end
+  end
 end
