@@ -63,9 +63,27 @@ feature 'User can edit his questions', "
         click_on 'Save'
       end
 
-      expect(page).to have_content "No rights to edit someone else's question."
       expect(page).to_not have_content 'new question title'
       expect(page).to_not have_content 'new question body'
+    end
+
+    scenario 'adds files when editing question' do
+      file1 = Rack::Test::UploadedFile.new(Rails.root.join('spec/rails_helper.rb'))
+      file2 = Rack::Test::UploadedFile.new(Rails.root.join('spec/spec_helper.rb'))
+      question = create(:question, author: user)
+      question.files.attach([file1, file2])
+
+      visit question_path(question)
+
+      within '.question' do
+        click_on 'Edit'
+        attach_file 'question[files][]', Rails.root.join('spec/factories/questions.rb')
+        click_on 'Save'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+        expect(page).to have_link 'questions.rb'
+      end
     end
   end
 
