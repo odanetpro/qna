@@ -31,12 +31,10 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if question.author_id == current_user&.id
-      question.destroy
-      redirect_to questions_path, notice: 'Your question deleted.'
-    else
-      redirect_to questions_path, alert: "No rights to delete someone else's question."
-    end
+    return unless question.author_id == current_user&.id
+
+    question.destroy
+    redirect_to questions_path, notice: 'Your question deleted.'
   end
 
   def delete_file
