@@ -24,11 +24,10 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if question.author_id == current_user&.id
-      question.update(question_params)
-    else
-      redirect_to question, alert: "No rights to edit someone else's question.", format: 'js'
-    end
+    return unless question.author_id == current_user&.id
+
+    question.files.attach(question_params['files']) if question_params['files']
+    question.update(question_params.except(:files))
   end
 
   def destroy
