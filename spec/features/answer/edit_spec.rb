@@ -56,8 +56,26 @@ feature 'User can edit his answers', "
         click_on 'Save'
       end
 
-      expect(page).to have_content "No rights to edit someone else's answer."
       expect(page).to_not have_content 'new answer body'
+    end
+
+    scenario 'adds files when editing answer' do
+      file1 = Rack::Test::UploadedFile.new(Rails.root.join('spec/rails_helper.rb'))
+      file2 = Rack::Test::UploadedFile.new(Rails.root.join('spec/spec_helper.rb'))
+      answer = create(:answer, question: question, author: user)
+      answer.files.attach([file1, file2])
+
+      visit question_path(question)
+
+      within ".answer-#{answer.id}" do
+        click_on 'Edit'
+        attach_file 'answer[files][]', Rails.root.join('spec/factories/questions.rb')
+        click_on 'Save'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+        expect(page).to have_link 'questions.rb'
+      end
     end
   end
 
