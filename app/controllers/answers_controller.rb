@@ -28,6 +28,13 @@ class AnswersController < ApplicationController
     answer.mark_as_best
   end
 
+  def delete_file
+    return unless answer.author_id == current_user&.id
+
+    @attached_file = answer.files.find_by(id: params[:file_id])
+    @attached_file.purge
+  end
+
   private
 
   def answer_params

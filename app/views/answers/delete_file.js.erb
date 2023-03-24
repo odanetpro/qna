@@ -1,0 +1,3 @@
+<% unless @attached_file.persisted? %>
+  $('#answer-attachments-' + <%= @answer.id %>).children('#file-' + <%= @attached_file.id %>).remove()
+<% end %>

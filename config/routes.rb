@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :answers, shallow: true, only: %i[create update destroy] do
       member do
         post :mark_best
+        delete 'delete_file/:file_id', action: :delete_file, as: :delete_file
       end
     end
 
