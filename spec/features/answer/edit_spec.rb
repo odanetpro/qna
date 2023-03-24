@@ -8,7 +8,7 @@ feature 'User can edit his answers', "
   I'd like to be able to edit my answer
 " do
   given!(:user) { create(:user) }
-  given!(:question) { create(:question) }
+  given!(:question) { create(:question, author: user) }
 
   describe 'Authenticated user', js: true do
     background { sign_in(user) }
@@ -17,15 +17,44 @@ feature 'User can edit his answers', "
       answer = create(:answer, question: question, author: user)
 
       visit question_path(question)
-      click_on 'Edit'
 
       within '.answers' do
+        click_on 'Edit'
+
+        expect(page).to_not have_content 'Edit'
+        expect(page).to_not have_content 'Best'
+
         fill_in 'answer[body]', with: 'edited answer'
         click_on 'Save'
 
         expect(page).to_not have_content answer.body
         expect(page).to have_content 'edited answer'
         expect(page).to_not have_selector 'textarea'
+        expect(page).to have_content 'Edit'
+        expect(page).to have_content 'Best'
+      end
+    end
+
+    scenario 'edits his best answer' do
+      answer = create(:answer, question: question, author: user)
+      answer.mark_as_best
+
+      visit question_path(question)
+
+      within '.answers' do
+        expect(page).to_not have_css 'best-answer-link'
+
+        click_on 'Edit'
+
+        expect(page).to_not have_content 'Edit'
+
+        fill_in 'answer[body]', with: 'edited answer'
+        click_on 'Save'
+
+        expect(page).to_not have_content answer.body
+        expect(page).to have_content 'edited answer'
+        expect(page).to_not have_selector 'textarea'
+        expect(page).to have_content 'Edit'
       end
     end
 
@@ -33,9 +62,10 @@ feature 'User can edit his answers', "
       create(:answer, question: question, author: user)
 
       visit question_path(question)
-      click_on 'Edit'
 
       within '.answers' do
+        click_on 'Edit'
+
         fill_in 'answer[body]', with: ''
         click_on 'Save'
 
@@ -63,6 +93,26 @@ feature 'User can edit his answers', "
       file1 = Rack::Test::UploadedFile.new(Rails.root.join('spec/rails_helper.rb'))
       file2 = Rack::Test::UploadedFile.new(Rails.root.join('spec/spec_helper.rb'))
       answer = create(:answer, question: question, author: user)
+      answer.files.attach([file1, file2])
+
+      visit question_path(question)
+
+      within ".answer-#{answer.id}" do
+        click_on 'Edit'
+        attach_file 'answer[files][]', Rails.root.join('spec/factories/questions.rb')
+        click_on 'Save'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+        expect(page).to have_link 'questions.rb'
+      end
+    end
+
+    scenario 'adds files when editing best answer' do
+      file1 = Rack::Test::UploadedFile.new(Rails.root.join('spec/rails_helper.rb'))
+      file2 = Rack::Test::UploadedFile.new(Rails.root.join('spec/spec_helper.rb'))
+      answer = create(:answer, question: question, author: user)
+      answer.mark_as_best
       answer.files.attach([file1, file2])
 
       visit question_path(question)
