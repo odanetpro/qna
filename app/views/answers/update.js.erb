@@ -16,4 +16,5 @@ $('#answer-errors-<%= answer.id %>').html('<%= render 'shared/errors', resource:
   $('form#edit-answer-' + <%= answer.id %>).addClass('hidden')
   $('.answer-' + <%= answer.id %>).children('.edit-answer-link').removeClass('hidden')
   $('.answer-' + <%= answer.id %>).children('.delete-answer-link').removeClass('hidden')
+  $('.answer-' + <%= answer.id %>).children('.best-answer-link').removeClass('hidden')
 <% end %>

@@ -6,6 +6,7 @@ $(document).on('turbolinks:load', function() {
     
     $(this).addClass('hidden')
     $('.answer-' + answerId).children('.delete-answer-link').addClass('hidden')
+    $('.answer-' + answerId).children('.best-answer-link').addClass('hidden')
     $('form#edit-answer-' + answerId).removeClass('hidden')
   })
 })
