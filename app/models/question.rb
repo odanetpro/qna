@@ -15,14 +15,6 @@ class Question < ApplicationRecord
     save!
   end
 
-  def best_answer
-    best_answer_id ? Answer.with_attached_files.find(best_answer_id) : nil
-  end
-
-  def answers
-    Answer.with_attached_files.where(question_id: id)
-  end
-
   def other_answers
     answers.where.not(id: best_answer_id)
   end

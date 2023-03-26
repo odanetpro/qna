@@ -2,7 +2,7 @@
   h1= question.title
   div id = "question-body"
     = question.body
-
+    
   .question-attachments
     - if question.files.attached?
       = render partial: 'questions/file', collection: question.files
@@ -34,9 +34,11 @@
         = f.file_field :files, multiple: true, direct_upload: true
       p= f.submit 'Save'
 
+p= link_to 'To questions', questions_path
+
 p= 'Answers'
 ol.answers
-  = render partial: 'answers/best_answer', locals: { answer: question.best_answer } if question.best_answer
-  = render partial: 'answers/answer', collection: question.other_answers
+  = render partial: 'answers/best_answer', locals: { answer: best_answer } if question.best_answer_id
+  = render partial: 'answers/answer', collection: other_answers
 
 = render 'answers/form'
