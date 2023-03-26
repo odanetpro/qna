@@ -11,8 +11,8 @@ yandex:
   access_key_id: <%= ENV.fetch('YOUR_ACCESS_KEY_ID') %>
   secret_access_key: <%= ENV.fetch('YOUR_SECRET_ACCESS_KEY') %>
   region: ru-central3
-  bucket: qna-bucket
-  endpoint: 'https://storage.yandexcloud.net'
+  bucket: <%= ENV.fetch('BUCKET') %>
+  endpoint: <%= ENV.fetch('ENDPOINT') %>
   force_path_style: true
 
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)

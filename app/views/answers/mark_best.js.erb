@@ -1,4 +1,4 @@
-<% if answer.question.best_answer == answer %>
-  $('.answers').html('<%= j render partial: 'answers/best_answer', locals: { answer: answer.question.best_answer } %>' +
-                     '<%= j render partial: 'answers/answer', collection: answer.question.other_answers %>')
+<% if question.best_answer_id == answer.id %>
+  $('.answers').html('<%= j render partial: 'answers/best_answer', locals: { answer: best_answer } %>' +
+                     '<%= j render partial: 'answers/answer', collection: other_answers %>')
 <% end %>
