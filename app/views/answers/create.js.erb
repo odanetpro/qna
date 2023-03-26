@@ -4,4 +4,7 @@ $('.answer-errors-new').html('<%= render 'shared/errors', resource: answer %>')
   $('.notice').html('Your answer successfully created!')
   $('.answers').append('<%= j render answer %>')
   $('.new-answer #answer_body').val('')
+
+  $('form.new-answer #answer_files').prop('disabled', false)
+  $('form.new-answer #answer_files').val('')
 <% end %>
