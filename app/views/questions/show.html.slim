@@ -7,6 +7,13 @@
     - if question.files.attached?
       = render partial: 'questions/file', collection: question.files
 
+  .question-links
+    - if question.links.present?
+      p Links
+      ul
+        - question.links.each do |link|
+          li= link_to link.name, link.url
+
   .question-controls
     - if question.author_id == current_user&.id
       = link_to 'Edit', '#', class: 'edit-question-link'

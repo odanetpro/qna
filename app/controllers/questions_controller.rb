@@ -11,7 +11,9 @@ class QuestionsController < ApplicationController
     @answer = question.answers.build
   end
 
-  def new; end
+  def new
+    question.links.build
+  end
 
   def create
     @question = Question.new(question_params)
@@ -53,6 +55,7 @@ class QuestionsController < ApplicationController
   helper_method :question
 
   def question_params
-    params.require(:question).permit(:title, :body, files: []).merge(author_id: current_user.id)
+    params.require(:question).permit(:title, :body, files: [],
+                                                    links_attributes: %i[name url]).merge(author_id: current_user.id)
   end
 end
