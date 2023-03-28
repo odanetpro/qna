@@ -10,6 +10,13 @@ li class = "answer-#{answer.id} best-answer"
     - if answer.files.attached?
       = render partial: 'answers/file', collection: answer.files, locals: { answer: answer }
 
+  div id = "answer-links-#{answer.id}"
+    - if answer.links.present?
+      p Links
+      ul
+        - answer.links.each do |link|
+          li= link_to link.name, link.url
+
   - if answer.author_id == current_user&.id
       = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
       |  
