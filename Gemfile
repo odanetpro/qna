@@ -34,6 +34,7 @@ gem 'devise'
 gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'aws-sdk-s3', require: false
+gem "cocoon"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
