@@ -55,4 +55,15 @@ feature 'User can add links to answer', "
       expect(page).to have_link 'Yandex', href: yandex_url
     end
   end
+
+  scenario 'User adds wrong link when give an answer', js: true do
+    fill_in 'answer[body]', with: 'Test answer'
+    fill_in 'Link name', with: 'Wrong link'
+    fill_in 'Url', with: 'yandex'
+
+    click_button 'Post Your Answer'
+
+    expect(page).to_not have_link 'Wrong link', href: 'yandex'
+    expect(page).to have_content 'url is invalid'
+  end
 end
