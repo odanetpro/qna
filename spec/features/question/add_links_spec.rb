@@ -51,4 +51,17 @@ feature 'User can add links to question', "
     expect(page).to have_link 'My gist', href: gist_url
     expect(page).to have_link 'Yandex', href: yandex_url
   end
+
+  scenario 'User adds wrong link when asks question' do
+    fill_in 'Title', with: 'Test question'
+    fill_in 'Body', with: 'text text text'
+
+    fill_in 'Link name', with: 'Wrong link'
+    fill_in 'Url', with: 'yandex'
+
+    click_on 'Ask'
+
+    expect(page).to_not have_link 'Wrong link', href: 'yandex'
+    expect(page).to have_content 'url is invalid'
+  end
 end
