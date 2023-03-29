@@ -10,11 +10,14 @@ feature 'User can add links to answer', "
   given(:user) { create(:user) }
   given(:question) { create(:question) }
   given(:gist_url) { 'https://gist.github.com/odanetpro/fd69fb3ff2341345606b8fb05d05eb68' }
+  given(:yandex_url) { 'http://yandex.ru' }
 
-  scenario 'User adds link when give an answer', js: true do
+  before do
     sign_in(user)
     visit question_path(question)
+  end
 
+  scenario 'User adds link when give an answer', js: true do
     fill_in 'answer[body]', with: 'Test answer'
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
@@ -23,6 +26,33 @@ feature 'User can add links to answer', "
 
     within '.answers' do
       expect(page).to have_link 'My gist', href: gist_url
+    end
+  end
+
+  scenario 'User adds links when give an answer', js: true do
+    fill_in 'answer[body]', with: 'Test answer'
+
+    within('.new-answer') do
+      click_on 'add link'
+
+      nested_fields = all('.nested-fields')
+
+      within(nested_fields.first) do
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: gist_url
+      end
+
+      within(nested_fields.last) do
+        fill_in 'Link name', with: 'Yandex'
+        fill_in 'Url', with: yandex_url
+      end
+
+      click_button 'Post Your Answer'
+    end
+
+    within('.answers') do
+      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_link 'Yandex', href: yandex_url
     end
   end
 end
