@@ -7,4 +7,8 @@ class Link < ApplicationRecord
 
   validates :name, presence: true
   validates :url, presence: true, format: { with: URL_REGEXP }
+
+  def gist?
+    url.include?('gist.github.com')
+  end
 end

@@ -8,7 +8,7 @@ RSpec.describe Link, type: :model do
   it { should validate_presence_of :name }
   it { should validate_presence_of :url }
 
-  describe 'URL validation' do
+  it 'should validate URL' do
     correct_urls = %w[http://ruby3arabi.com
                       http://www.ruby3arabi.com
                       https://www.ruby3arabi.com
@@ -22,11 +22,22 @@ RSpec.describe Link, type: :model do
                     127.0.0.1]
 
     correct_urls.each do |url|
-      it { should allow_values(url).for(:url) }
+      should allow_values(url).for(:url)
     end
 
     wrong_urls.each do |url|
-      it { should_not allow_values(url).for(:url) }
+      should_not allow_values(url).for(:url)
     end
+  end
+
+  it 'should define a gist link' do
+    question = create(:question)
+
+    link = create(:link, url: 'http://yandex.ru', linkable: question)
+    gist_link = create(:link, url: 'https://gist.github.com/odanetpro/fd69fb3ff2341345606b8fb05d05eb68',
+                              linkable: question)
+
+    expect(gist_link.gist?).to be_truthy
+    expect(link.gist?).to be_falsey
   end
 end

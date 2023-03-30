@@ -9,6 +9,7 @@ feature 'User can add links to question', "
 " do
   given(:user) { create(:user) }
   given(:gist_url) { 'https://gist.github.com/odanetpro/fd69fb3ff2341345606b8fb05d05eb68' }
+  given(:google_url) { 'http://google.com' }
   given(:yandex_url) { 'http://yandex.ru' }
 
   before do
@@ -20,12 +21,12 @@ feature 'User can add links to question', "
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text text'
 
-    fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: gist_url
+    fill_in 'Link name', with: 'Google'
+    fill_in 'Url', with: google_url
 
     click_on 'Ask'
 
-    expect(page).to have_link 'My gist', href: gist_url
+    expect(page).to have_link 'Google', href: google_url
   end
 
   scenario 'User adds links when asks question', js: true do
@@ -37,8 +38,8 @@ feature 'User can add links to question', "
     nested_fields = all('.nested-fields')
 
     within(nested_fields.first) do
-      fill_in 'Link name', with: 'My gist'
-      fill_in 'Url', with: gist_url
+      fill_in 'Link name', with: 'Google'
+      fill_in 'Url', with: google_url
     end
 
     within(nested_fields.last) do
@@ -48,7 +49,7 @@ feature 'User can add links to question', "
 
     click_on 'Ask'
 
-    expect(page).to have_link 'My gist', href: gist_url
+    expect(page).to have_link 'Google', href: google_url
     expect(page).to have_link 'Yandex', href: yandex_url
   end
 
@@ -63,5 +64,19 @@ feature 'User can add links to question', "
 
     expect(page).to_not have_link 'Wrong link', href: 'yandex'
     expect(page).to have_content 'url is invalid'
+  end
+
+  scenario 'User adds gist link when asks question', js: true do
+    fill_in 'Title', with: 'Test question'
+    fill_in 'Body', with: 'text text text'
+
+    fill_in 'Link name', with: 'Gist'
+    fill_in 'Url', with: gist_url
+
+    click_on 'Ask'
+
+    within('.question .gist-content') do
+      expect(page).to have_content "puts 'Hello, world!'"
+    end
   end
 end
