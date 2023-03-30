@@ -1,0 +1,4 @@
+- if link.gist?
+  li= link_to link.name, link.url, class: 'gist-link', data: { gist_id: gist_id(link.url) }
+- else
+  li= link_to link.name, link.url

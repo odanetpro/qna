@@ -14,8 +14,7 @@ li class = "answer-#{answer.id} best-answer"
     - if answer.links.present?
       p Links
       ul
-        - answer.links.each do |link|
-          li= link_to link.name, link.url
+        = render partial: 'shared/link', collection: answer.links
 
   - if answer.author_id == current_user&.id
       = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }

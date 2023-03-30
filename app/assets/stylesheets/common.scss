@@ -1,1 +1,11 @@
 .hidden { display: none; }
+
+@keyframes gist_link_inserted {
+  from { z-index: 1; }
+  to { z-index: 1; }
+}
+
+.gist-link {
+  animation-duration: 0.001s;
+  animation-name: gist_link_inserted;
+}

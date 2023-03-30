@@ -9,9 +9,12 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "utilities/answers"
 import "utilities/questions"
+import "utilities/show_gists"
 
 require("jquery")
 require("@nathanvda/cocoon")
+require("underscore")
+require("vendor/gh3")
 
 Rails.start()
 Turbolinks.start()
