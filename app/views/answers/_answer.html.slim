@@ -10,7 +10,6 @@ li class = "answer-#{answer.id}"
 
   div id = "answer-links-#{answer.id}"
     - if answer.links.present?
-      p Links
       ul
         = render partial: 'shared/link', collection: answer.links
 

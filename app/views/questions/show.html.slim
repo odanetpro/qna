@@ -9,7 +9,6 @@
 
   .question-links
     - if question.links.present?
-      p Links
       ul
         = render partial: 'shared/link', collection: question.links
 
