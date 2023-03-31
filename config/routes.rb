@@ -17,4 +17,6 @@ Rails.application.routes.draw do
       delete 'delete_file/:file_id', action: :delete_file, as: :delete_file
     end
   end
+
+  resources :links, only: :destroy
 end
