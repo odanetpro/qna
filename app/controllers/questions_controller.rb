@@ -57,6 +57,6 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, files: [],
-                                                    links_attributes: %i[name url]).merge(author_id: current_user.id)
+                                                    links_attributes: %i[id name url]).merge(author_id: current_user.id)
   end
 end

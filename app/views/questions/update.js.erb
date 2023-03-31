@@ -5,10 +5,14 @@ $('.question-errors').html('<%= render 'shared/errors', resource: question %>')
   $('.question').children('#question-body').html('<%= j question.body %>')
 
   <% if question.files.attached? %>
-    $('.question-attachments').html('<%= render partial: 'questions/file', collection: question.files %>')
+    $('.question-attachments').html('<%= j render partial: 'questions/file', collection: question.files %>')
   <% end %>
 
-  $('form#edit-question').addClass('hidden')
+  <% if question.links.present? %>
+    $('.question-links').html('<ul><%= j render partial: 'shared/link', collection: question.links %></ul>')
+  <% end %>
+
+  $('.question-edit-form').html('<%= j render partial: 'questions/edit_form' %>')
   $('.edit-question-link').removeClass('hidden')
   $('.delete-question-link').removeClass('hidden')
 <% end %>

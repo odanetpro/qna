@@ -1,0 +1,22 @@
+= form_with model: question, class: 'hidden', html: { id: "edit-question" }, local: false do |f|
+  p
+    = f.label :title
+    br
+    = f.text_field :title
+  p
+    = f.label :body
+    br
+    = f.text_area :body
+  p
+    = 'Add files'
+    br
+    = f.file_field :files, multiple: true, direct_upload: true
+
+  div
+    = f.fields_for :links do |l|
+      = render 'shared/link_fields', f: l
+
+    .links
+      = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
+          
+  p= f.submit 'Save'

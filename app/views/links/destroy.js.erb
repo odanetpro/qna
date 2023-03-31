@@ -1,3 +1,9 @@
 <% unless @link.persisted? %>
   $('#link-' + <%= @link.id %>).remove()
+
+  <% if @link.linkable.is_a?(Question) %>
+    $('.question-edit-form').html('<%= j render partial: 'questions/edit_form', locals: { question: @link.linkable } %>')
+    $('.edit-question-link').removeClass('hidden')
+    $('.delete-question-link').removeClass('hidden')
+  <% end %>
 <% end %>
