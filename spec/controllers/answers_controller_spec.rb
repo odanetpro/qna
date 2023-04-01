@@ -74,6 +74,11 @@ RSpec.describe AnswersController, type: :controller do
       expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
     end
 
+    it 'tries to delete some one else answer' do
+      other_answer = create(:answer)
+      expect { delete :destroy, params: { id: other_answer }, format: :js }.to change(Answer, :count).by(0)
+    end
+
     it 'renders destroy view' do
       delete :destroy, params: { id: answer }, format: :js
       expect(response).to render_template :destroy
