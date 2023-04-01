@@ -30,4 +30,5 @@ li class = "answer-#{answer.id}"
               remote: true,
               class: 'best-answer-link'
 
-  = render partial: 'answers/edit_form', locals: { answer: answer }
+  div id = "answer-edit-form-#{answer.id}"
+    = render partial: 'answers/edit_form', locals: { answer: answer }

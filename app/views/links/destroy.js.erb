@@ -5,5 +5,10 @@
     $('.question-edit-form').html('<%= j render partial: 'questions/edit_form', locals: { question: @link.linkable } %>')
     $('.edit-question-link').removeClass('hidden')
     $('.delete-question-link').removeClass('hidden')
+  <% elsif @link.linkable.is_a?(Answer) %>
+    $('#answer-edit-form-' + <%= @link.linkable.id %>).html('<%= j render partial: 'answers/edit_form', locals: { answer: @link.linkable } %>')
+    $('.answer-' + <%= @link.linkable.id %>).children('.edit-answer-link').removeClass('hidden')
+    $('.answer-' + <%= @link.linkable.id %>).children('.delete-answer-link').removeClass('hidden')
+    $('.answer-' + <%= @link.linkable.id %>).children('.best-answer-link').removeClass('hidden')
   <% end %>
 <% end %>
