@@ -15,11 +15,9 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if answer.author_id == current_user&.id
-      answer.destroy
-    else
-      redirect_to answer.question, alert: "No rights to delete someone else's answer.", format: 'js'
-    end
+    return unless answer.author_id == current_user&.id
+
+    answer.destroy
   end
 
   def mark_best

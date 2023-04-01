@@ -41,13 +41,12 @@ feature "Author can delete his own answer, but can't delete someone else's answe
     end
 
     scenario "tries to delete someone else's answer" do
-      someone_else_answer = create(:answer, question: question, author: create(:user))
+      create(:answer, question: question, author: create(:user))
 
-      delete(answer_path(someone_else_answer))
+      visit question_path(question)
 
-      expect(page).to have_content "No rights to delete someone else's answer."
       within '.answers' do
-        expect(page).to have_content someone_else_answer.body
+        expect(page).to_not have_content 'Delete'
       end
     end
   end
@@ -56,9 +55,10 @@ feature "Author can delete his own answer, but can't delete someone else's answe
     answer = create(:answer, question: question, author: user)
 
     visit question_path(question)
-    delete(answer_path(answer))
 
     within '.answers' do
+      expect(page).to_not have_content 'Delete'
+      delete(answer_path(answer))
       expect(page).to have_content answer.body
     end
   end
