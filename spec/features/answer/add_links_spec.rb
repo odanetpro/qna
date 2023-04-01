@@ -13,71 +13,138 @@ feature 'User can add links to answer', "
   given(:google_url) { 'http://google.com' }
   given(:yandex_url) { 'http://yandex.ru' }
 
-  before do
-    sign_in(user)
-    visit question_path(question)
-  end
-
-  scenario 'User adds link when give an answer', js: true do
-    fill_in 'answer[body]', with: 'Test answer'
-    fill_in 'Link name', with: 'Google'
-    fill_in 'Url', with: google_url
-
-    click_button 'Post Your Answer'
-
-    within '.answers' do
-      expect(page).to have_link 'Google', href: google_url
+  describe 'CREATE' do
+    before do
+      sign_in(user)
+      visit question_path(question)
     end
-  end
 
-  scenario 'User adds links when give an answer', js: true do
-    fill_in 'answer[body]', with: 'Test answer'
-
-    within('.new-answer') do
-      click_on 'add link'
-
-      nested_fields = all('.nested-fields')
-
-      within(nested_fields.first) do
-        fill_in 'Link name', with: 'Google'
-        fill_in 'Url', with: google_url
-      end
-
-      within(nested_fields.last) do
-        fill_in 'Link name', with: 'Yandex'
-        fill_in 'Url', with: yandex_url
-      end
+    scenario 'User adds link when give an answer', js: true do
+      fill_in 'answer[body]', with: 'Test answer'
+      fill_in 'Link name', with: 'Google'
+      fill_in 'Url', with: google_url
 
       click_button 'Post Your Answer'
+
+      within '.answers' do
+        expect(page).to have_link 'Google', href: google_url
+      end
     end
 
-    within('.answers') do
-      expect(page).to have_link 'Google', href: google_url
-      expect(page).to have_link 'Yandex', href: yandex_url
+    scenario 'User adds links when give an answer', js: true do
+      fill_in 'answer[body]', with: 'Test answer'
+
+      within('.new-answer') do
+        click_on 'add link'
+
+        nested_fields = all('.nested-fields')
+
+        within(nested_fields.first) do
+          fill_in 'Link name', with: 'Google'
+          fill_in 'Url', with: google_url
+        end
+
+        within(nested_fields.last) do
+          fill_in 'Link name', with: 'Yandex'
+          fill_in 'Url', with: yandex_url
+        end
+
+        click_button 'Post Your Answer'
+      end
+
+      within('.answers') do
+        expect(page).to have_link 'Google', href: google_url
+        expect(page).to have_link 'Yandex', href: yandex_url
+      end
+    end
+
+    scenario 'User adds wrong link when give an answer', js: true do
+      fill_in 'answer[body]', with: 'Test answer'
+      fill_in 'Link name', with: 'Wrong link'
+      fill_in 'Url', with: 'yandex'
+
+      click_button 'Post Your Answer'
+
+      expect(page).to_not have_link 'Wrong link', href: 'yandex'
+      expect(page).to have_content 'url is invalid'
+    end
+
+    scenario 'User adds gist link when give an answer', js: true do
+      fill_in 'answer[body]', with: 'Test answer'
+
+      fill_in 'Link name', with: 'Gist'
+      fill_in 'Url', with: gist_url
+
+      click_button 'Post Your Answer'
+
+      within('.answers .gist-content') do
+        expect(page).to have_content "puts 'Hello, world!'"
+      end
     end
   end
 
-  scenario 'User adds wrong link when give an answer', js: true do
-    fill_in 'answer[body]', with: 'Test answer'
-    fill_in 'Link name', with: 'Wrong link'
-    fill_in 'Url', with: 'yandex'
+  describe 'EDIT', js: true do
+    scenario 'User adds links when edit answer' do
+      sign_in(user)
 
-    click_button 'Post Your Answer'
+      answer = create(:answer, question: question, author: user)
+      visit question_path(question)
 
-    expect(page).to_not have_link 'Wrong link', href: 'yandex'
-    expect(page).to have_content 'url is invalid'
-  end
+      within ".answer-#{answer.id}" do
+        click_on 'Edit'
 
-  scenario 'User adds gist link when give an answer', js: true do
-    fill_in 'answer[body]', with: 'Test answer'
+        click_on 'add link'
+        click_on 'add link'
 
-    fill_in 'Link name', with: 'Gist'
-    fill_in 'Url', with: gist_url
+        nested_fields = all('.nested-fields')
 
-    click_button 'Post Your Answer'
+        within(nested_fields.first) do
+          fill_in 'Link name', with: 'Google'
+          fill_in 'Url', with: google_url
+        end
 
-    within('.answers .gist-content') do
-      expect(page).to have_content "puts 'Hello, world!'"
+        within(nested_fields.last) do
+          fill_in 'Link name', with: 'Yandex'
+          fill_in 'Url', with: yandex_url
+        end
+
+        click_on 'Save'
+
+        expect(page).to have_link 'Google', href: google_url
+        expect(page).to have_link 'Yandex', href: yandex_url
+      end
+    end
+
+    scenario 'User adds links when edit best answer' do
+      sign_in(user)
+
+      answer = create(:answer, question: question, author: user)
+      answer.mark_as_best
+      visit question_path(question)
+
+      within ".answer-#{answer.id}" do
+        click_on 'Edit'
+
+        click_on 'add link'
+        click_on 'add link'
+
+        nested_fields = all('.nested-fields')
+
+        within(nested_fields.first) do
+          fill_in 'Link name', with: 'Google'
+          fill_in 'Url', with: google_url
+        end
+
+        within(nested_fields.last) do
+          fill_in 'Link name', with: 'Yandex'
+          fill_in 'Url', with: yandex_url
+        end
+
+        click_on 'Save'
+
+        expect(page).to have_link 'Google', href: google_url
+        expect(page).to have_link 'Yandex', href: yandex_url
+      end
     end
   end
 end

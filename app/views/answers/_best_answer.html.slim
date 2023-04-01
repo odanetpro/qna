@@ -25,4 +25,5 @@ li class = "answer-#{answer.id} best-answer"
                 class: 'delete-answer-link',
                 data: { confirm: t('.confirm') }
 
-  = render partial: 'answers/edit_form', locals: { answer: answer }
+  div id = "answer-edit-form-#{answer.id}"
+    = render partial: 'answers/edit_form', locals: { answer: answer }

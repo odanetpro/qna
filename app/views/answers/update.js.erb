@@ -7,7 +7,11 @@ $('#answer-errors-<%= answer.id %>').html('<%= render 'shared/errors', resource:
     $('.answer-' + <%= answer.id %>).children('#answer-attachments-' + <%= answer.id %>).html('<%= render partial: 'answers/file', collection: answer.files, locals: { answer: answer } %>')
   <% end %>
 
-  $('form#edit-answer-' + <%= answer.id %>).addClass('hidden')
+  <% if answer.links.present? %>
+    $('#answer-links-<%= answer.id %>').html('<ul><%= j render partial: 'shared/link', collection: answer.links %></ul>')
+  <% end %>
+
+  $('#answer-edit-form-' + <%= answer.id %>).html('<%= j render partial: 'answers/edit_form', locals: { answer: answer } %>')
   $('.answer-' + <%= answer.id %>).children('.edit-answer-link').removeClass('hidden')
   $('.answer-' + <%= answer.id %>).children('.delete-answer-link').removeClass('hidden')
   $('.answer-' + <%= answer.id %>).children('.best-answer-link').removeClass('hidden')
