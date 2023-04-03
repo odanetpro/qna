@@ -12,6 +12,15 @@
       ul
         = render partial: 'shared/link', collection: question.links
 
+  .question-award
+    - if question.award.present?
+      p
+        b= 'Best answer award'
+      p
+        = image_tag question.award.image, size: 50
+        br
+        = question.award.name
+
   .question-controls
     - if question.author_id == current_user&.id
       = link_to 'Edit', '#', class: 'edit-question-link'

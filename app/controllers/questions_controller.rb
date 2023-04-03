@@ -13,6 +13,7 @@ class QuestionsController < ApplicationController
   end
 
   def new
+    question.build_award
     question.links.build
   end
 
@@ -57,6 +58,7 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, files: [],
-                                                    links_attributes: %i[id name url]).merge(author_id: current_user.id)
+                                                    links_attributes: %i[id name url],
+                                                    award_attributes: %i[name image]).merge(author_id: current_user.id)
   end
 end
