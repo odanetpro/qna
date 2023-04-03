@@ -23,6 +23,7 @@ class AnswersController < ApplicationController
   def mark_best
     return unless answer.question.author_id == current_user&.id
 
+    question.award&.update(user_id: answer.author.id)
     answer.mark_as_best
   end
 

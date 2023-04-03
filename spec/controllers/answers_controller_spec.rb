@@ -116,6 +116,18 @@ RSpec.describe AnswersController, type: :controller do
 
       expect(question.best_answer).to be_nil
     end
+
+    it 'author of the best answer receives award' do
+      image = Rack::Test::UploadedFile.new(Rails.root.join('spec/attachments/award.png'))
+      question = create(:question, author: user)
+      create(:award, question: question, image: image)
+      answer = create(:answer, question: question)
+
+      post :mark_best, params: { id: answer }, format: :js
+      question.reload
+
+      expect(question.award.user).to eq answer.author
+    end
   end
 
   describe 'DELETE #delete_file' do
