@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :award do
-    name { "MyString" }
+    name { "My award" }
     image { nil }
     question factory: :question
     user { nil }

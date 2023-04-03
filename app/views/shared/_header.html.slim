@@ -1,6 +1,13 @@
 header
   .navbar
-    strong= 'QnA'
+    strong
+      = link_to 'QnA', root_path
+
+    div
+      ul
+        - if user_signed_in?
+          li
+            = link_to 'My awards', user_awards_path(current_user)
 
     span
       - if user_signed_in?
