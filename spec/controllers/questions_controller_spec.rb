@@ -40,6 +40,10 @@ RSpec.describe QuestionsController, type: :controller do
       expect(response).to render_template :new
     end
 
+    it 'assigns a new award' do
+      expect(assigns(:question).award).to be_a_new(Award)
+    end
+
     it 'assigns a new link' do
       expect(assigns(:question).links.first).to be_a_new(Link)
     end
@@ -69,6 +73,18 @@ RSpec.describe QuestionsController, type: :controller do
       it 're-render new view' do
         post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to render_template :new
+      end
+    end
+
+    context 'with award' do
+      it 'save a new award in the database' do
+        image = Rack::Test::UploadedFile.new(Rails.root.join('spec/attachments/award.png'))
+
+        expect do
+          post :create,
+               params: { question: attributes_for(:question).merge(award_attributes: attributes_for(:award,
+                                                                                                    image: image)) }
+        end.to change(Award, :count).by(1)
       end
     end
   end

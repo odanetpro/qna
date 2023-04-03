@@ -14,6 +14,19 @@
     br
     = f.file_field :files, multiple: true, direct_upload: true
 
+  p Award
+
+  .award
+   = f.fields_for :award do |a|
+     p
+       = a.label :name, 'Award name'
+       br
+       = a.text_field :name
+     p
+       = a.label :image
+       br
+       = a.file_field :image, direct_upload: true
+
   p Links
   
   .question-links
