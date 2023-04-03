@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   root to: 'questions#index'
 
+  get 'users/:user_id/awards', to: 'awards#user_awards', as: :user_awards
+
   resources :questions, except: :edit do
     resources :answers, shallow: true, only: %i[create update destroy] do
       member do
