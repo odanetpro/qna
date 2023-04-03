@@ -7,4 +7,8 @@ $('.answer-errors-new').html('<%= render 'shared/errors', resource: answer %>')
 
   $('form.new-answer #answer_files').prop('disabled', false)
   $('form.new-answer #answer_files').val('')
+  
+  <% @answer = question.answers.build %>
+  <% @answer.links.build %>
+  $('form.new-answer').replaceWith('<%= j render 'answers/form' %>')
 <% end %>
