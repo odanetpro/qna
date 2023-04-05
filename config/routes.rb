@@ -7,8 +7,15 @@ Rails.application.routes.draw do
 
   get 'users/:user_id/awards', to: 'awards#user_awards', as: :user_awards
 
-  resources :questions, except: :edit do
-    resources :answers, shallow: true, only: %i[create update destroy] do
+  concern :votable do
+    member do
+      post :vote_up
+      post :vote_down
+    end
+  end
+
+  resources :questions, except: :edit, concerns: :votable do
+    resources :answers, shallow: true, only: %i[create update destroy], concerns: :votable do
       member do
         post :mark_best
         delete 'delete_file/:file_id', action: :delete_file, as: :delete_file
