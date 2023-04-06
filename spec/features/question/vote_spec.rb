@@ -8,29 +8,45 @@ feature 'User can vote for question', "
   I'd like to be able to add vote (for or against) to question
 " do
   given(:user) { create(:user) }
-  given!(:question) { create(:question) }
 
   describe 'Authenticated user', js: true do
+    given!(:question) { create(:question) }
+
     background do
       sign_in(user)
-      visit question_path(question)
     end
 
-    scenario 'vote for question' do
-      within '.question-rating' do
-        find('.vote-up').click
+    describe 'not author' do
+      background do
+        visit question_path(question)
+      end
+
+      scenario 'vote for question' do
+        within '.question-rating' do
+          find('.vote-up').click
+        end
+      end
+
+      scenario 'vote against question' do
+        within '.question-rating' do
+          find('.vote-down').click
+        end
       end
     end
 
-    scenario 'vote against question' do
+    scenario 'author tries to vote for his question' do
+      question = create(:question, author: user)
+      visit question_path(question)
+
       within '.question-rating' do
-        find('.vote-down').click
+        expect(page).to_not have_css('.vote-up')
+        expect(page).to_not have_css('.vote-down')
       end
     end
   end
 
   scenario 'Unauthenticated user tries to vote for question' do
-    visit question_path(question)
+    visit question_path(create(:question))
 
     within '.question-rating' do
       expect(page).to_not have_css('.vote-up')
