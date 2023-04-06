@@ -13,14 +13,14 @@ RSpec.describe Vote, type: :model do
 
   it 'should set vote value to like' do
     vote = create(:vote, value: -1)
-    vote.set_like!
+    vote.set_like
     vote.reload
     expect(vote.value).to eq(1)
   end
 
   it 'should set vote value to dislike' do
     vote = create(:vote, value: 1)
-    vote.set_dislike!
+    vote.set_dislike
     vote.reload
     expect(vote.value).to eq(-1)
   end
