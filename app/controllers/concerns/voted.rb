@@ -9,9 +9,14 @@ module Voted
   end
 
   def vote_up
-    return if @voted.author_id == current_user.id
+    return if @voted.author_id == current_user.id || @vote.like?
 
-    @vote.set_like! unless @vote.like?
+    if @vote.dislike?
+      @vote.destroy
+      return
+    end
+
+    @vote.set_like!
 
     respond_to do |format|
       format.json { render json: {}, status: :ok }
@@ -19,9 +24,14 @@ module Voted
   end
 
   def vote_down
-    return if @voted.author_id == current_user.id
+    return if @voted.author_id == current_user.id || @vote.dislike?
 
-    @vote.set_dislike! unless @vote.dislike?
+    if @vote.like?
+      @vote.destroy
+      return
+    end
+
+    @vote.set_dislike!
 
     respond_to do |format|
       format.json { render json: {}, status: :ok }
