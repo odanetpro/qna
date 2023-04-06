@@ -27,6 +27,12 @@ RSpec.shared_examples_for 'votable controller' do
       end.to change(Vote, :count).by(1)
     end
 
+    it 'change vote from up to down' do
+      post :vote_up, params: { id: voted }, format: :json
+      post :vote_down, params: { id: voted }, format: :json
+      expect(assigns(:vote).value).to eq(-1)
+    end
+
     it 'author tries to vote up' do
       voted.update(author_id: user.id)
 
@@ -63,6 +69,12 @@ RSpec.shared_examples_for 'votable controller' do
           post :vote_down, params: { id: voted }, format: :json
         end
       end.to change(Vote, :count).by(1)
+    end
+
+    it 'change vote from down to up' do
+      post :vote_down, params: { id: voted }, format: :json
+      post :vote_up, params: { id: voted }, format: :json
+      expect(assigns(:vote).value).to eq(1)
     end
 
     it 'author tries to vote down' do
