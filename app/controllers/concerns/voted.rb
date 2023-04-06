@@ -5,9 +5,12 @@ module Voted
 
   included do
     before_action :set_vote, only: %i[vote_up vote_down]
+    before_action :set_voted, only: %i[vote_up vote_down]
   end
 
   def vote_up
+    return if @voted.author_id == current_user.id
+
     @vote.set_like!
 
     respond_to do |format|
@@ -16,6 +19,8 @@ module Voted
   end
 
   def vote_down
+    return if @voted.author_id == current_user.id
+
     @vote.set_dislike!
 
     respond_to do |format|
@@ -35,5 +40,9 @@ module Voted
 
   def vote_params
     { user: current_user, votable_type: model_klass.to_s, votable_id: params[:id] }
+  end
+
+  def set_voted
+    @voted = model_klass.find(params[:id])
   end
 end

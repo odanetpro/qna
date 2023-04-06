@@ -19,6 +19,14 @@ RSpec.shared_examples_for 'votable controller' do
       expect(response).to have_http_status(:ok)
     end
 
+    it 'author tries to vote up' do
+      voted.update(author_id: user.id)
+
+      expect do
+        post :vote_up, params: { id: voted }, format: :json
+      end.to change(Vote, :count).by(0)
+    end
+
     it 'unauthenticated user tries to vote up' do
       logout(user)
       expect do
@@ -39,6 +47,14 @@ RSpec.shared_examples_for 'votable controller' do
     it 'responds with success' do
       post :vote_down, params: { id: voted }, format: :json
       expect(response).to have_http_status(:ok)
+    end
+
+    it 'author tries to vote down' do
+      voted.update(author_id: user.id)
+
+      expect do
+        post :vote_down, params: { id: voted }, format: :json
+      end.to change(Vote, :count).by(0)
     end
 
     it 'unauthenticated user tries to vote down' do

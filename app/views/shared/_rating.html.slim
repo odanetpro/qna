@@ -1,6 +1,6 @@
 p
   | Rating: 
-  - if user_signed_in?
+  - if user_signed_in? && votable.author_id != current_user&.id
     = link_to '+',
               polymorphic_path([:vote_up, votable]),
               method: :post,
