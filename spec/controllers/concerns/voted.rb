@@ -25,10 +25,20 @@ RSpec.shared_examples_for 'votable controller' do
           post :vote_up, params: { id: voted }, format: :json
         end
       end.to change(Vote, :count).by(1)
+
+      expect(voted.votes.sum(:value)).to eq(1)
+    end
+
+    it 'cancellation of up vote' do
+      expect do
+        post :vote_up, params: { id: voted }, format: :json
+        post :vote_down, params: { id: voted }, format: :json
+      end.to change(Vote, :count).by(0)
     end
 
     it 'change vote from up to down' do
       post :vote_up, params: { id: voted }, format: :json
+      post :vote_down, params: { id: voted }, format: :json
       post :vote_down, params: { id: voted }, format: :json
       expect(assigns(:vote).value).to eq(-1)
     end
@@ -69,10 +79,20 @@ RSpec.shared_examples_for 'votable controller' do
           post :vote_down, params: { id: voted }, format: :json
         end
       end.to change(Vote, :count).by(1)
+
+      expect(voted.votes.sum(:value)).to eq(-1)
+    end
+
+    it 'cancellation of down vote' do
+      expect do
+        post :vote_down, params: { id: voted }, format: :json
+        post :vote_up, params: { id: voted }, format: :json
+      end.to change(Vote, :count).by(0)
     end
 
     it 'change vote from down to up' do
       post :vote_down, params: { id: voted }, format: :json
+      post :vote_up, params: { id: voted }, format: :json
       post :vote_up, params: { id: voted }, format: :json
       expect(assigns(:vote).value).to eq(1)
     end
