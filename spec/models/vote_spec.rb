@@ -24,4 +24,40 @@ RSpec.describe Vote, type: :model do
     vote.reload
     expect(vote.value).to eq(-1)
   end
+
+  describe 'like?' do
+    it 'should return true if like' do
+      vote = create(:vote, value: 1)
+      expect(vote.like?).to be_truthy
+    end
+
+    it 'should return false if dislike' do
+      vote = create(:vote, value: -1)
+      expect(vote.like?).to be_falsey
+    end
+
+    it 'should return false if null' do
+      vote = create(:vote)
+      vote.value = nil
+      expect(vote.like?).to be_falsey
+    end
+  end
+
+  describe 'dislike?' do
+    it 'should return true if dislike' do
+      vote = create(:vote, value: -1)
+      expect(vote.dislike?).to be_truthy
+    end
+
+    it 'should return false if like' do
+      vote = create(:vote, value: 1)
+      expect(vote.dislike?).to be_falsey
+    end
+
+    it 'should return false if null' do
+      vote = create(:vote)
+      vote.value = nil
+      expect(vote.dislike?).to be_falsey
+    end
+  end
 end

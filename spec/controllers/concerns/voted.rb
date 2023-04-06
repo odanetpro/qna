@@ -19,6 +19,14 @@ RSpec.shared_examples_for 'votable controller' do
       expect(response).to have_http_status(:ok)
     end
 
+    it 'tries to vote up multiple times in a row' do
+      expect do
+        2.times do
+          post :vote_up, params: { id: voted }, format: :json
+        end
+      end.to change(Vote, :count).by(1)
+    end
+
     it 'author tries to vote up' do
       voted.update(author_id: user.id)
 
@@ -47,6 +55,14 @@ RSpec.shared_examples_for 'votable controller' do
     it 'responds with success' do
       post :vote_down, params: { id: voted }, format: :json
       expect(response).to have_http_status(:ok)
+    end
+
+    it 'tries to vote down multiple times in a row' do
+      expect do
+        2.times do
+          post :vote_down, params: { id: voted }, format: :json
+        end
+      end.to change(Vote, :count).by(1)
     end
 
     it 'author tries to vote down' do
