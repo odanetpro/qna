@@ -164,4 +164,8 @@ RSpec.describe AnswersController, type: :controller do
       end.to change(answer.files, :count).by(0)
     end
   end
+
+  it_behaves_like 'votable controller' do
+    let!(:voted) { create(:answer) }
+  end
 end

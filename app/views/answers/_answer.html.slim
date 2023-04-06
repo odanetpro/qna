@@ -13,6 +13,9 @@ li class = "answer-#{answer.id}"
       ul
         = render partial: 'shared/link', collection: answer.links
 
+  div id = "answer-rating-#{answer.id}"
+    = render partial: 'shared/rating', locals: { votable: answer }
+
   - if answer.author_id == current_user&.id
     = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     |  
