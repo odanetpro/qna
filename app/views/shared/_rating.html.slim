@@ -1,0 +1,16 @@
+p
+  | Rating: 
+  - if user_signed_in?
+    = link_to '+',
+              polymorphic_path([:vote_up, votable]),
+              method: :post,
+              data: { type: :json },
+              remote: true,
+              class: 'vote-up'
+    |  
+    = link_to '–',
+              polymorphic_path([:vote_down, votable]),
+              method: :post,
+              data: { type: :json },
+              remote: true,
+              class: 'vote-down'

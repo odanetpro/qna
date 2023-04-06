@@ -22,22 +22,7 @@
         = question.award.name
 
   .question-rating
-    p
-      | Rating: 
-      - if user_signed_in?
-        = link_to '+',
-                  polymorphic_path([:vote_up, question]),
-                  method: :post,
-                  data: { type: :json },
-                  remote: true,
-                  class: 'vote-up'
-        |  
-        = link_to '–',
-                  polymorphic_path([:vote_down, question]),
-                  method: :post,
-                  data: { type: :json },
-                  remote: true,
-                  class: 'vote-down'
+    = render partial: 'shared/rating', locals: { votable: question }
 
   .question-controls
     - if question.author_id == current_user&.id
