@@ -20,12 +20,14 @@ feature 'User can vote for answer', "
     scenario 'vote for answer' do
       within "#answer-rating-#{answer.id}" do
         find('.vote-up').click
+        find('.rating-value').has_content?('1')
       end
     end
 
     scenario 'vote against answer' do
       within "#answer-rating-#{answer.id}" do
         find('.vote-down').click
+        find('.rating-value').has_content?('-1')
       end
     end
 
@@ -33,6 +35,7 @@ feature 'User can vote for answer', "
       answer.mark_as_best
       within "#answer-rating-#{answer.id}" do
         find('.vote-up').click
+        find('.rating-value').has_content?('1')
       end
     end
 
@@ -40,6 +43,7 @@ feature 'User can vote for answer', "
       answer.mark_as_best
       within "#answer-rating-#{answer.id}" do
         find('.vote-down').click
+        find('.rating-value').has_content?('-1')
       end
     end
 
@@ -50,6 +54,7 @@ feature 'User can vote for answer', "
       within "#answer-rating-#{his_answer.id}" do
         expect(page).to_not have_css('.vote-up')
         expect(page).to_not have_css('.vote-down')
+        find('.rating-value').has_content?('0')
       end
     end
 
@@ -61,6 +66,7 @@ feature 'User can vote for answer', "
       within "#answer-rating-#{his_answer.id}" do
         expect(page).to_not have_css('.vote-up')
         expect(page).to_not have_css('.vote-down')
+        find('.rating-value').has_content?('0')
       end
     end
   end
