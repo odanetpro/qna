@@ -24,12 +24,14 @@ feature 'User can vote for question', "
       scenario 'vote for question' do
         within '.question-rating' do
           find('.vote-up').click
+          find('.rating-value').has_content?('1')
         end
       end
 
       scenario 'vote against question' do
         within '.question-rating' do
           find('.vote-down').click
+          find('.rating-value').has_content?('-1')
         end
       end
     end
@@ -41,6 +43,7 @@ feature 'User can vote for question', "
       within '.question-rating' do
         expect(page).to_not have_css('.vote-up')
         expect(page).to_not have_css('.vote-down')
+        find('.rating-value').has_content?('0')
       end
     end
   end
@@ -51,6 +54,7 @@ feature 'User can vote for question', "
     within '.question-rating' do
       expect(page).to_not have_css('.vote-up')
       expect(page).to_not have_css('.vote-down')
+      find('.rating-value').has_content?('0')
     end
   end
 end

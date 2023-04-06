@@ -6,35 +6,26 @@ module Voted
   included do
     before_action :set_vote, only: %i[vote_up vote_down]
     before_action :set_voted, only: %i[vote_up vote_down]
+    helper_method :rating
   end
 
   def vote_up
-    return if @voted.author_id == current_user.id || @vote.like?
-
-    if @vote.dislike?
-      @vote.destroy
-      return
-    end
-
-    @vote.set_like!
-
-    respond_to do |format|
-      format.json { render json: {}, status: :ok }
+    if @voted.author_id == current_user.id || @vote.like?
+      render json: {}, status: :not_acceptable
+    else
+      # set_like works for new vote
+      @vote.dislike? ? @vote.destroy : @vote.set_like
+      render json: { rating: rating(@voted) }, status: :ok
     end
   end
 
   def vote_down
-    return if @voted.author_id == current_user.id || @vote.dislike?
-
-    if @vote.like?
-      @vote.destroy
-      return
-    end
-
-    @vote.set_dislike!
-
-    respond_to do |format|
-      format.json { render json: {}, status: :ok }
+    if @voted.author_id == current_user.id || @vote.dislike?
+      render json: {}, status: :not_acceptable
+    else
+      # set_dislike works for new vote
+      @vote.like? ? @vote.destroy : @vote.set_dislike
+      render json: { rating: rating(@voted) }, status: :ok
     end
   end
 
@@ -54,5 +45,9 @@ module Voted
 
   def set_voted
     @voted = model_klass.find(params[:id])
+  end
+
+  def rating(voted)
+    voted.votes.sum(:value)
   end
 end

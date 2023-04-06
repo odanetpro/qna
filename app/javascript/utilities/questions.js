@@ -9,4 +9,8 @@ $(document).on('turbolinks:load', function() {
     $('form#edit-question #question_files').prop('disabled', false)
     $('form#edit-question #question_files').val('')
   })
+
+  $('.question').on('ajax:success', function(e) {
+    $('.question .rating-value').html(e.detail[0]['rating'])
+  })
 })
