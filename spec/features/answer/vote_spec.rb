@@ -42,6 +42,27 @@ feature 'User can vote for answer', "
         find('.vote-down').click
       end
     end
+
+    scenario 'author tries to vote for his answer' do
+      his_answer = create(:answer, question: question, author: user)
+      visit question_path(question)
+
+      within "#answer-rating-#{his_answer.id}" do
+        expect(page).to_not have_css('.vote-up')
+        expect(page).to_not have_css('.vote-down')
+      end
+    end
+
+    scenario 'author tries to vote for his best answer' do
+      his_answer = create(:answer, question: question, author: user)
+      his_answer.mark_as_best
+      visit question_path(question)
+
+      within "#answer-rating-#{his_answer.id}" do
+        expect(page).to_not have_css('.vote-up')
+        expect(page).to_not have_css('.vote-down')
+      end
+    end
   end
 
   scenario 'Unauthenticated user tries to vote for answer' do
