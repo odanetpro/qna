@@ -15,7 +15,7 @@ module Voted
     else
       # set_like works for new vote
       @vote.dislike? ? cancel_vote : @vote.set_like
-      render json: { rating: rating(@voted), id: @voted.id }, status: :ok
+      render json: { id: @voted.id, rating: rating(@voted) }, status: :ok
     end
   end
 
@@ -25,7 +25,7 @@ module Voted
     else
       # set_dislike works for new vote
       @vote.like? ? cancel_vote : @vote.set_dislike
-      render json: { rating: rating(@voted), id: @voted.id }, status: :ok
+      render json: { id: @voted.id, rating: rating(@voted) }, status: :ok
     end
   end
 
