@@ -14,7 +14,7 @@ module Voted
       render json: {}, status: :not_acceptable
     else
       # set_like works for new vote
-      @vote.dislike? ? @vote.destroy : @vote.set_like
+      @vote.dislike? ? cancel_vote : @vote.set_like
       render json: { rating: rating(@voted), id: @voted.id }, status: :ok
     end
   end
@@ -24,7 +24,7 @@ module Voted
       render json: {}, status: :not_acceptable
     else
       # set_dislike works for new vote
-      @vote.like? ? @vote.destroy : @vote.set_dislike
+      @vote.like? ? cancel_vote : @vote.set_dislike
       render json: { rating: rating(@voted), id: @voted.id }, status: :ok
     end
   end
@@ -45,6 +45,10 @@ module Voted
 
   def set_voted
     @voted = model_klass.find(params[:id])
+  end
+
+  def cancel_vote
+    @vote.destroy
   end
 
   def rating(voted)
