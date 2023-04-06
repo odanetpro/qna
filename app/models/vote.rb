@@ -16,4 +16,12 @@ class Vote < ApplicationRecord
     self.value = -1
     save!
   end
+
+  def like?
+    value == 1
+  end
+
+  def dislike?
+    value == -1
+  end
 end

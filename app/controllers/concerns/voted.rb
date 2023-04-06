@@ -11,7 +11,7 @@ module Voted
   def vote_up
     return if @voted.author_id == current_user.id
 
-    @vote.set_like!
+    @vote.set_like! unless @vote.like?
 
     respond_to do |format|
       format.json { render json: {}, status: :ok }
@@ -21,7 +21,7 @@ module Voted
   def vote_down
     return if @voted.author_id == current_user.id
 
-    @vote.set_dislike!
+    @vote.set_dislike! unless @vote.dislike?
 
     respond_to do |format|
       format.json { render json: {}, status: :ok }
