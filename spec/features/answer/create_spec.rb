@@ -46,6 +46,84 @@ feature 'User can create an answer to the question', "
     end
   end
 
+  describe 'multiple sessions', js: true do
+    given(:google_url) { 'http://google.com' }
+
+    scenario "answer appears on another user's page" do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'answer[body]', with: 'Test answer'
+        attach_file 'File', [Rails.root.join('spec/rails_helper.rb'), Rails.root.join('spec/spec_helper.rb')]
+        fill_in 'Link name', with: 'Google'
+        fill_in 'Url', with: google_url
+        click_button 'Post Your Answer'
+
+        expect(current_path).to eq question_path(question)
+        expect(page).to have_content question.title
+
+        within '.answers' do
+          expect(page).to have_content 'Test answer'
+          expect(page).to have_link 'Google', href: google_url
+          expect(page).to have_link 'rails_helper.rb'
+          expect(page).to have_link 'spec_helper.rb'
+        end
+      end
+
+      Capybara.using_session('guest') do
+        within '.answers' do
+          expect(page).to have_content 'Test answer'
+          expect(page).to have_link 'Google', href: google_url
+          expect(page).to have_link 'rails_helper.rb'
+          expect(page).to have_link 'spec_helper.rb'
+        end
+      end
+    end
+
+    scenario "answer appears on question's author page" do
+      author = create(:user)
+      new_question = create(:question, author: author)
+
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(new_question)
+      end
+
+      Capybara.using_session('author') do
+        sign_in(author)
+        visit question_path(new_question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'answer[body]', with: 'Test answer'
+        click_button 'Post Your Answer'
+
+        expect(current_path).to eq question_path(new_question)
+        expect(page).to have_content question.title
+
+        within '.answers' do
+          expect(page).to have_content 'Test answer'
+        end
+      end
+
+      Capybara.using_session('author') do
+        within '.answers' do
+          expect(page).to have_content 'Test answer'
+          expect(page).to have_css('.best-answer-link')
+          expect(page).to have_css('.vote-up')
+          expect(page).to have_css('.vote-down')
+        end
+      end
+    end
+  end
+
   scenario 'Unauthenticated user tries answer the question' do
     visit question_path(question)
     click_button 'Post Your Answer'
