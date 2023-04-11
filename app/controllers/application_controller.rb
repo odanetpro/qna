@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  before_action :gon_user, unless: :devise_controller?
+
   private
+
+  def gon_user
+    gon.user_id = current_user&.id
+  end
 
   def best_answer
     question.best_answer_id ? Answer.with_attached_files.find(question.best_answer_id) : nil
