@@ -38,6 +38,14 @@ div class = "question" id = "#{question.id}"
 
     .question-edit-form
       = render partial: 'questions/edit_form'
+  
+  div class = "question-#{question.id}-comments"
+    - if question.comments.present?
+      p Comments
+      = render partial: 'comments/comment', collection: question.comments
+
+  - if user_signed_in?
+    = render partial: 'comments/form', locals: { commentable: question }
 
 p= link_to 'To questions', questions_path
 

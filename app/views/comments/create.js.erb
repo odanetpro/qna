@@ -1,0 +1,9 @@
+$('.<%= @commentable.class.name.underscore %>-<%= @commentable.id %>-comments-errors').html('<%= render 'shared/errors', resource: @comment %>')
+
+<% if @comment.persisted? %>
+  $('.<%= @commentable.class.name.underscore %>-<%= @commentable.id %>-comments').append('<%= j render 'comments/comment', comment: @comment  %>')
+
+  $('a#<%= @commentable.id %>.<%= @commentable.class.name.underscore %>-add-comment').removeClass('hidden')
+  $('form#<%= @commentable.class.name.underscore %>-<%= @commentable.id %>-new-comment').addClass('hidden')
+  $('form#<%= @commentable.class.name.underscore %>-<%= @commentable.id %>-new-comment')[0].reset()
+<% end %>
