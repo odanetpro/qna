@@ -1,0 +1,14 @@
+p
+  = link_to 'Add a comment', '#', class: "#{commentable.class.name.underscore}-add-comment", id: commentable.id
+
+  div class="#{commentable.class.name.underscore}-#{commentable.id}-comments-errors"
+  
+  = form_with model: [commentable, commentable.comments.build], class: 'hidden', html: { id: "#{commentable.class.name.underscore}-#{commentable.id}-new-comment" }, local: false do |f|
+
+    p
+      = f.label :body
+      br
+      = f.text_area :body
+      = f.hidden_field :commentable_type, value: commentable.class.name
+
+    p= f.submit 'Post your comment'
