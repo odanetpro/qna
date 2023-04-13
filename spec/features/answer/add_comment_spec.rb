@@ -70,6 +70,67 @@ feature 'User can add comment to answer', "
         expect(page).to have_content "Body can't be blank"
       end
     end
+
+    describe 'multiple sessions' do
+      given!(:answer) { create(:answer, question: question) }
+
+      scenario "comment for answer appears on another user's page" do
+        Capybara.using_session('user') do
+          sign_in(user)
+          visit question_path(question)
+        end
+
+        Capybara.using_session('guest') do
+          visit question_path(question)
+        end
+
+        Capybara.using_session('user') do
+          within ".answer-#{answer.id}" do
+            click_on 'Add a comment'
+
+            fill_in 'comment[body]', with: 'new comment'
+            click_on 'Post your comment'
+
+            expect(page).to have_content 'new comment'
+          end
+        end
+
+        Capybara.using_session('guest') do
+          within ".answer-#{answer.id}" do
+            expect(page).to have_content 'new comment'
+          end
+        end
+      end
+
+      scenario "comment for best answer appears on another user's page" do
+        Capybara.using_session('user') do
+          sign_in(user)
+          answer.mark_as_best
+          visit question_path(question)
+        end
+
+        Capybara.using_session('guest') do
+          visit question_path(question)
+        end
+
+        Capybara.using_session('user') do
+          within ".answer-#{answer.id}" do
+            click_on 'Add a comment'
+
+            fill_in 'comment[body]', with: 'new comment'
+            click_on 'Post your comment'
+
+            expect(page).to have_content 'new comment'
+          end
+        end
+
+        Capybara.using_session('guest') do
+          within ".answer-#{answer.id}" do
+            expect(page).to have_content 'new comment'
+          end
+        end
+      end
+    end
   end
 
   scenario 'Unauthenticated user tries to add comment to answer' do
