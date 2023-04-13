@@ -13,6 +13,14 @@ $(document).on('turbolinks:load', function() {
     $('form#edit-answer-' + answerId + ' #answer_files').val('')
   })
 
+  $('.answers').on('click', '.answer-add-comment', function(e) {
+    var answerId = $(this).attr('id')
+    e.preventDefault()
+
+    $(this).addClass('hidden')
+    $(`form#answer-${answerId}-new-comment`).removeClass('hidden')
+  })
+
   $('.answers').on('ajax:success', function(e) {
     const answerId = e.detail[0]['id']
     $('.answer-' + answerId + ' .rating-value').html(e.detail[0]['rating'])
