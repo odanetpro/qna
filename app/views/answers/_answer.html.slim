@@ -35,3 +35,11 @@ li class = "answer-#{answer.id}"
 
   div id = "answer-edit-form-#{answer.id}"
     = render partial: 'answers/edit_form', locals: { answer: answer }
+
+  div class = "answer-#{answer.id}-comments"
+    - if answer.comments.present?
+      p
+      = render partial: 'comments/comment', collection: answer.comments
+
+  - if user_signed_in?
+    = render partial: 'comments/form', locals: { commentable: answer }

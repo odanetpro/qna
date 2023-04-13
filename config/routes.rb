@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   end
 
   resources :questions, except: :edit, concerns: %i[votable commentable] do
-    resources :answers, shallow: true, only: %i[create update destroy], concerns: :votable do
+    resources :answers, shallow: true, only: %i[create update destroy], concerns: %i[votable commentable] do
       member do
         post :mark_best
         delete 'delete_file/:file_id', action: :delete_file, as: :delete_file
