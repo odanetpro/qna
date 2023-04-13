@@ -38,6 +38,36 @@ feature 'User can add comment to question', "
         expect(page).to have_content "Body can't be blank"
       end
     end
+
+    describe 'multiple sessions' do
+      scenario "comment for question appears on another user's page" do
+        Capybara.using_session('user') do
+          sign_in(user)
+          visit question_path(question)
+        end
+
+        Capybara.using_session('guest') do
+          visit question_path(question)
+        end
+
+        Capybara.using_session('user') do
+          within '.question' do
+            click_on 'Add a comment'
+
+            fill_in 'comment[body]', with: 'new comment'
+            click_on 'Post your comment'
+
+            expect(page).to have_content 'new comment'
+          end
+        end
+
+        Capybara.using_session('guest') do
+          within '.question' do
+            expect(page).to have_content 'new comment'
+          end
+        end
+      end
+    end
   end
 
   scenario 'Unauthenticated user tries to add comment for question' do

@@ -8,6 +8,13 @@ $(document).on('turbolinks:load', function() {
 
   //remove all opened chanels
   for (const subscription of consumer.subscriptions.subscriptions) {
+    const channelName = JSON.parse(subscription.identifier).channel
+
+    //except CommentsChannel
+    if (channelName == 'CommentsChannel') {
+      continue
+    }
+
     consumer.subscriptions.remove(subscription)
   }
 
