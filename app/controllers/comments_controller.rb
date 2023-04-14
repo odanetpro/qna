@@ -5,8 +5,7 @@ class CommentsController < ApplicationController
   after_action :publish_comment, only: :create
 
   def create
-    @comment = commentable.comments.build(comment_params)
-    @comment.save
+    @comment = commentable.comments.create(comment_params)
   end
 
   private
