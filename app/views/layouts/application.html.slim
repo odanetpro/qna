@@ -9,10 +9,12 @@ html
 
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
-  body
-    = render 'shared/header'
+
+  body class="d-flex flex-column min-vh-100"
+    .container-flex
+      = render 'shared/header'
     
-    p.notice = notice
-    p.alert = alert
-    
-    = yield
+    div class="container mb-5"
+      .flash-message
+        = render 'shared/flash'
+      = yield

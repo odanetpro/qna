@@ -21,7 +21,7 @@ feature 'Author of question can choose another best answer if the question alrea
       visit question_path(question)
 
       within ".answer-#{answer2.id}" do
-        click_on 'Best'
+        find('.best-answer-link').click
       end
 
       within '.best-answer' do

@@ -37,7 +37,7 @@ feature 'User can create question', "
       fill_in 'Title', with: 'Test question'
       fill_in 'Body', with: 'text text text'
 
-      attach_file 'File', [Rails.root.join('spec/rails_helper.rb'), Rails.root.join('spec/spec_helper.rb')]
+      attach_file 'question[files][]', [Rails.root.join('spec/rails_helper.rb'), Rails.root.join('spec/spec_helper.rb')]
       click_on 'Ask'
 
       expect(page).to have_link 'rails_helper.rb'
@@ -58,6 +58,8 @@ feature 'User can create question', "
 
       Capybara.using_session('user') do
         click_on 'Ask question'
+
+        sleep 2
 
         fill_in 'Title', with: 'Test question'
         fill_in 'Body', with: 'text text text'

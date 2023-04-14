@@ -2,8 +2,9 @@ p id= "file-#{file.id}"
   = link_to file.filename.to_s, url_for(file)
   - if answer.author_id == current_user&.id
     |  
-    = link_to 'Remove',
+    = link_to svg_icon_remove_file,
               delete_file_answer_path(answer, file),
               method: :delete,
               remote: true,
+              class: 'remove-file text-danger',
               data: { confirm: 'Are you sure?' }

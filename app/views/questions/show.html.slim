@@ -1,56 +1,59 @@
 div class = "question" id = "#{question.id}"
-  h1= question.title
-  div id = "question-body"
-    = question.body
-    
-  .question-attachments
-    - if question.files.attached?
-      = render partial: 'questions/file', collection: question.files
+  h1 class="py-3 border-bottom"
+    = question.title
 
-  .question-links
-    - if question.links.present?
-      ul
-        = render partial: 'shared/link', collection: question.links
+  div class="parent"
+    div class="child align-top pe-4 pb-3"
+      div class="question-rating text-center py-3"
+        = render partial: 'shared/rating', locals: { votable: question }
 
-  .question-award
-    - if question.award.present?
-      p
-        b= 'Best answer award'
-      p
-        = image_tag question.award.image, size: 50
-        br
-        = question.award.name
+    div class="child-max"
+      div id = "question-body" class="py-3 fs-3"
+        = question.body
+        
+      div class="question-attachments mt-3"
+        - if question.files.attached?
+          = render partial: 'questions/file', collection: question.files
 
-  .question-rating
-    = render partial: 'shared/rating', locals: { votable: question }
+      div class="question-links mt-3"
+        - if question.links.present?
+          ul class="list-unstyled"
+            = render partial: 'shared/link', collection: question.links
 
-  .question-controls
-    - if question.author_id == current_user&.id
-      = link_to 'Edit', '#', class: 'edit-question-link'
-      |  
-      = link_to 'Delete',
-                question_path(question),
-                method: :delete,
-                class: 'delete-question-link',
-                data: { confirm: t('.confirm') }
+      div class="question-award mt-3"
+        - if question.award.present?
+          p
+            b= 'Best answer award'
+          p
+            = image_tag question.award.image, size: 50
+            br
+            = question.award.name
 
-    .question-errors
+      div class="question-controls mt-3"
+        - if question.author_id == current_user&.id
+          div class="btn-group"
+            = link_to 'Edit', '#', class: 'edit-question-link btn btn-outline-secondary'
+            = link_to 'Delete',
+                      question_path(question),
+                      method: :delete,
+                      class: 'delete-question-link btn btn-outline-secondary',
+                      data: { confirm: t('.confirm') }
 
-    .question-edit-form
-      = render partial: 'questions/edit_form'
-  
-  div class = "question-#{question.id}-comments"
-    - if question.comments.present?
-      p Comments
-      = render partial: 'comments/comment', collection: question.comments
+        .question-errors
 
-  - if user_signed_in?
-    = render partial: 'comments/form', locals: { commentable: question }
+        .question-edit-form
+          = render partial: 'questions/edit_form'
+      
+      div class = "question-#{question.id}-comments mt-3"
+        - if question.comments.present?
+          = render partial: 'comments/comment', collection: question.comments
 
-p= link_to 'To questions', questions_path
+      - if user_signed_in?
+        = render partial: 'comments/form', locals: { commentable: question }
 
-p= 'Answers'
-ol.answers
+h5 class="mt-3"
+  | Answers
+ul class="answers list-unstyled"
   = render partial: 'answers/best_answer', locals: { answer: best_answer } if question.best_answer_id
   = render partial: 'answers/answer', collection: other_answers
 

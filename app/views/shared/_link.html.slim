@@ -1,13 +1,16 @@
-li id= "link-#{link.id}"
-  - if link.gist?
-    = link_to link.name, link.url, class: 'gist-link', data: { gist_id: gist_id(link.url) }
-  - else
-    = link_to link.name, link.url
+li id="link-#{link.id}"
+  div class="d-inline"
+    - if link.gist?
+      = link_to link.name, link.url, class: 'gist-link', data: { gist_id: gist_id(link.url) }
+    - else
+      = link_to link.name, link.url
 
   - if link.linkable&.author_id == current_user&.id
-      div
-        = link_to 'Remove',
-                  link_path(link),
-                  method: :delete,
-                  remote: true,
-                  data: { confirm: 'Are you sure?' }
+    div class="d-inline ms-1"
+      |  
+      = link_to svg_icon_trash,
+                link_path(link),
+                method: :delete,
+                remote: true,
+                class: 'remove-link text-danger',
+                data: { confirm: 'Are you sure?' }

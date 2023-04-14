@@ -24,7 +24,7 @@ feature "Author can delete attached file from his own answer, but can't delete f
         expect(page).to have_content 'rails_helper.rb'
 
         accept_confirm do
-          click_on 'Remove'
+          find('a.remove-file').click
         end
 
         expect(page).to_not have_content 'rails_helper.rb'
@@ -42,7 +42,7 @@ feature "Author can delete attached file from his own answer, but can't delete f
         expect(page).to have_content 'rails_helper.rb'
 
         accept_confirm do
-          click_on 'Remove'
+          find('a.remove-file').click
         end
 
         expect(page).to_not have_content 'rails_helper.rb'
@@ -56,7 +56,7 @@ feature "Author can delete attached file from his own answer, but can't delete f
       visit question_path(question)
 
       within ".answer-#{someone_else_answer.id}" do
-        expect(page).to_not have_content 'Remove'
+        expect(page).to_not have_css 'a.remove-file'
       end
     end
   end
@@ -68,7 +68,7 @@ feature "Author can delete attached file from his own answer, but can't delete f
     visit question_path(question)
 
     within ".answer-#{answer.id}" do
-      expect(page).to_not have_content 'Remove'
+      expect(page).to_not have_css 'a.remove-file'
     end
   end
 end

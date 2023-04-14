@@ -1,18 +1,24 @@
 header
-  .navbar
-    strong
-      = link_to 'QnA', root_path
+  nav class="navbar navbar-dark navbar-expand-lg p-3 mb-3" style="background-color: rgba(245, 152, 75);"
+    .container
+      button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerQnA" aria-controls="navbarTogglerQnA" aria-expanded="false" aria-label="Переключатель навигации"
+        span class="navbar-toggler-icon"
 
-    div
-      ul
-        - if user_signed_in?
-          li
-            = link_to 'My awards', user_awards_path(current_user)
+      strong
+        = link_to 'QnA', root_path, class: 'navbar-brand'
 
-    span
-      - if user_signed_in?
-        = link_to 'Sign out', destroy_user_session_path, method: :delete
-      - else
-        = link_to 'Sign in', new_user_session_path
-        |  | 
-        = link_to 'Sign up', new_user_registration_path
+      div class="collapse navbar-collapse" id="navbarTogglerQnA"
+        ul class="navbar-nav me-auto mb-2 mb-lg-0"
+          li class="nav-item"
+            = link_to 'Questions', questions_path, class: 'nav-link'
+          - if user_signed_in?
+            li class="nav-item"
+              = link_to 'My awards', user_awards_path(current_user), class: 'nav-link'
+
+        span class="navbar-text"
+          - if user_signed_in?
+            = link_to 'Sign out', destroy_user_session_path, method: :delete
+          - else
+            = link_to 'Sign in', new_user_session_path
+            |  | 
+            = link_to 'Sign up', new_user_registration_path

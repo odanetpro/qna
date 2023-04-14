@@ -1,21 +1,23 @@
-= form_with model: [question, @answer], class: 'new-answer', local: false do |f|
+= form_with model: [question, @answer], class: 'new-answer pt-3 px-3 rounded border', local: false do |f|
   b= f.label :body, 'Your Answer'
   br
 
   .answer-errors-new
 
-  = f.text_area :body
-  p
-    = f.label :files
-    br
-    = f.file_field :files, multiple: true, direct_upload: true
+  = f.text_area :body, class: "form-control"
+
+  div class="mt-3"
+    p
+      = f.label :files
+      br
+      = f.file_field :files, multiple: true, direct_upload: true, class: "form-control", id: "formFileMultiple"
 
   p Links
-  p
+  div
     = f.fields_for :links do |l|
       = render 'shared/link_fields', f: l
 
-    .links
+    div class="links mt-2"
       = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
 
-  p= f.submit 'Post Your Answer'
+  p= f.submit 'Post Your Answer', class: 'btn btn-primary mt-3'

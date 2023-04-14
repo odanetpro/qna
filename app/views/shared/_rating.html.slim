@@ -1,19 +1,18 @@
-p
-  | Rating:
-  .rating-value
-    = rating(votable)
-
   - if user_signed_in? && votable.author_id != current_user&.id
-    = link_to '+',
+    = link_to svg_icon_caret_up_fill,
               polymorphic_path([:vote_up, votable]),
               method: :post,
               data: { type: :json },
               remote: true,
-              class: 'vote-up'
-    |  
-    = link_to '–',
+              class: 'vote-up text-black-50'
+
+  div class="rating-value text-muted fs-3 mt-1"
+    = rating(votable)
+
+  - if user_signed_in? && votable.author_id != current_user&.id  
+    = link_to svg_icon_caret_down_fill,
               polymorphic_path([:vote_down, votable]),
               method: :post,
               data: { type: :json },
               remote: true,
-              class: 'vote-down'
+              class: 'vote-down text-black-50'

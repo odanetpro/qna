@@ -20,6 +20,8 @@ feature 'User can create an answer to the question', "
       fill_in 'answer[body]', with: 'Test answer'
       click_button 'Post Your Answer'
 
+      sleep 3
+
       expect(current_path).to eq question_path(question)
 
       expect(page).to have_content 'Your answer successfully created!'
@@ -33,13 +35,17 @@ feature 'User can create an answer to the question', "
     scenario 'answers the question with errors' do
       click_button 'Post Your Answer'
 
-      expect(page).to have_content "Body can't be blank"
+      within '.answer-errors-new' do
+        expect(page).to have_content "Body can't be blank"
+      end
     end
 
     scenario 'answers the question with attached files' do
       fill_in 'answer[body]', with: 'Test answer'
-      attach_file 'File', [Rails.root.join('spec/rails_helper.rb'), Rails.root.join('spec/spec_helper.rb')]
+      attach_file 'answer[files][]', [Rails.root.join('spec/rails_helper.rb'), Rails.root.join('spec/spec_helper.rb')]
       click_button 'Post Your Answer'
+
+      sleep 2
 
       expect(page).to have_link 'rails_helper.rb'
       expect(page).to have_link 'spec_helper.rb'
@@ -61,7 +67,7 @@ feature 'User can create an answer to the question', "
 
       Capybara.using_session('user') do
         fill_in 'answer[body]', with: 'Test answer'
-        attach_file 'File', [Rails.root.join('spec/rails_helper.rb'), Rails.root.join('spec/spec_helper.rb')]
+        attach_file 'answer[files][]', [Rails.root.join('spec/rails_helper.rb'), Rails.root.join('spec/spec_helper.rb')]
         fill_in 'Link name', with: 'Google'
         fill_in 'Url', with: google_url
         click_button 'Post Your Answer'

@@ -1,5 +1,5 @@
 h1= 'All Questions'
-p= link_to 'Ask question', new_question_path
+p= link_to 'Ask question', new_question_path, class: 'btn btn-primary mt-2'
 
-.questions-list
+div class="questions-list mt-4"
   = render @questions

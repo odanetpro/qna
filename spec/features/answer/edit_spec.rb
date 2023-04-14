@@ -27,6 +27,8 @@ feature 'User can edit his answers', "
         fill_in 'answer[body]', with: 'edited answer'
         click_on 'Save'
 
+        sleep 3
+
         expect(page).to_not have_content answer.body
         expect(page).to have_content 'edited answer'
         expect(page).to_not have_selector 'textarea'
@@ -51,6 +53,8 @@ feature 'User can edit his answers', "
         fill_in 'answer[body]', with: 'edited answer'
         click_on 'Save'
 
+        sleep 5
+
         expect(page).to_not have_content answer.body
         expect(page).to have_content 'edited answer'
         expect(page).to_not have_selector 'textarea'
@@ -68,6 +72,8 @@ feature 'User can edit his answers', "
 
         fill_in 'answer[body]', with: ''
         click_on 'Save'
+
+        sleep 2
 
         expect(page).to have_content "Body can't be blank"
       end

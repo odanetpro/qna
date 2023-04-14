@@ -25,7 +25,7 @@ feature 'User can delete link from his question', "
       within('.question-links') do
         expect(page).to have_link 'Google', href: google_url
 
-        accept_confirm { click_on('Remove') }
+        accept_confirm { find('a.remove-link').click }
 
         expect(page).to_not have_link 'Google', href: google_url
       end
@@ -40,7 +40,7 @@ feature 'User can delete link from his question', "
       within('.question-links') do
         expect(page).to have_css "#link-#{link.id}"
 
-        accept_confirm { click_on('Remove') }
+        accept_confirm { find('a.remove-link').click }
 
         expect(page).to_not have_css "#link-#{link.id}"
       end
@@ -56,7 +56,7 @@ feature 'User can delete link from his question', "
     visit(question_path(question))
 
     within('.question-links') do
-      expect(page).to_not have_link 'Remove'
+      expect(page).to_not have_css 'a.remove-link'
     end
   end
 
@@ -68,7 +68,7 @@ feature 'User can delete link from his question', "
     visit(question_path(question))
 
     within('.question-links') do
-      expect(page).to_not have_link 'Remove'
+      expect(page).to_not have_css 'a.remove-link'
     end
   end
 end
