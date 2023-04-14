@@ -20,7 +20,7 @@ feature 'User can add award to question', "
 
     within '.award' do
       fill_in 'Award name', with: 'My award'
-      attach_file 'Image', Rails.root.join('spec/attachments/award.png')
+      attach_file 'question[award_attributes][image]', Rails.root.join('spec/attachments/award.png')
     end
 
     click_on 'Ask'
@@ -37,7 +37,7 @@ feature 'User can add award to question', "
 
     within '.award' do
       fill_in 'Award name', with: ''
-      attach_file 'Image', Rails.root.join('spec/attachments/award.png')
+      attach_file 'question[award_attributes][image]', Rails.root.join('spec/attachments/award.png')
     end
 
     click_on 'Ask'

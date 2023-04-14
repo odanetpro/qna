@@ -49,6 +49,7 @@ feature 'User can add links to question', "
       end
 
       click_on 'Ask'
+      sleep 2
 
       expect(page).to have_link 'Google', href: google_url
       expect(page).to have_link 'Yandex', href: yandex_url
@@ -75,6 +76,8 @@ feature 'User can add links to question', "
       fill_in 'Url', with: gist_url
 
       click_on 'Ask'
+
+      sleep 2
 
       within('.question .gist-content') do
         expect(page).to have_content "puts 'Hello, world!'"

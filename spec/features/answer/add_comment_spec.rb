@@ -54,6 +54,7 @@ feature 'User can add comment to answer', "
         click_on 'Add a comment'
         click_on 'Post your comment'
 
+        sleep 2
         expect(page).to have_content "Body can't be blank"
       end
     end

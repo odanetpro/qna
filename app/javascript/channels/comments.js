@@ -23,7 +23,7 @@ $(document).on('turbolinks:load', function() {
       const comment = JSON.parse(data).comment
 
       if(comment.author_id != gon.user_id){
-        $(`.${comment.commentable_type.toLowerCase()}-${comment.commentable_id}-comments`).append(`<div class="comment-body" id="comment-${comment.id}">${comment.body}</div>`)
+        $(`.${comment.commentable_type.toLowerCase()}-${comment.commentable_id}-comments`).append(`<div class="comment-body py-1 border-bottom" id="comment-${comment.id}">${comment.body}</div>`)
       }
     }
   })

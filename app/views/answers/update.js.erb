@@ -1,10 +1,10 @@
 $('#answer-errors-<%= answer.id %>').html('<%= render 'shared/errors', resource: answer %>')
 
 <% unless answer.errors.present? %>
-  $('.answer-' + <%= answer.id %>).children('#answer-body-' + <%= answer.id %>).html('<%= j answer.body %>')
+  $('#answer-body-' + <%= answer.id %>).html('<%= j answer.body %>')
   
   <% if answer.files.attached? %>
-    $('.answer-' + <%= answer.id %>).children('#answer-attachments-' + <%= answer.id %>).html('<%= render partial: 'answers/file', collection: answer.files, locals: { answer: answer } %>')
+    $('.answer-' + <%= answer.id %>).find('#answer-attachments-' + <%= answer.id %>).html('<%= j render partial: 'answers/file', collection: answer.files, locals: { answer: answer } %>')
   <% end %>
 
   <% if answer.links.present? %>
@@ -12,7 +12,7 @@ $('#answer-errors-<%= answer.id %>').html('<%= render 'shared/errors', resource:
   <% end %>
 
   $('#answer-edit-form-' + <%= answer.id %>).html('<%= j render partial: 'answers/edit_form', locals: { answer: answer } %>')
-  $('.answer-' + <%= answer.id %>).children('.edit-answer-link').removeClass('hidden')
-  $('.answer-' + <%= answer.id %>).children('.delete-answer-link').removeClass('hidden')
-  $('.answer-' + <%= answer.id %>).children('.best-answer-link').removeClass('hidden')
+  $('.answer-' + <%= answer.id %>).find('.edit-answer-link').removeClass('hidden')
+  $('.answer-' + <%= answer.id %>).find('.delete-answer-link').removeClass('hidden')
+  $('.answer-' + <%= answer.id %>).find('.best-answer-link').removeClass('hidden')
 <% end %>

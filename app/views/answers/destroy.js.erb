@@ -1,4 +1,4 @@
 <% unless answer.persisted? %>
-  $('.notice').html('Your answer deleted.')
+  $('.flash-message').html('<div class="my-3"><p class="alert alert-success", role="alert"> Your answer deleted. </p></div>')
   $('.answer-' + <%= answer.id %>).remove();
 <% end %>

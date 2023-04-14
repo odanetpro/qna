@@ -9,3 +9,21 @@
   animation-duration: 0.001s;
   animation-name: gist_link_inserted;
 }
+
+.parent {
+  display: flex;
+}
+
+.child {
+  width: 110px;
+  display: block;
+}
+
+.child-max {
+  flex: 1;
+  display: block;
+}
+
+.list-unstyled{
+  list-style-type: none;
+}

@@ -1,39 +1,45 @@
+h1 New question
+
 = render 'shared/errors', resource: question
 
 = form_with model: question, local: true do |f|
   p
     = f.label :title
     br
-    = f.text_field :title
+    = f.text_field :title, class: "form-control"
   p
     = f.label :body
     br
-    = f.text_area :body
+    = f.text_area :body, class: "form-control"
   p
     = f.label :files
     br
-    = f.file_field :files, multiple: true, direct_upload: true
+    = f.file_field :files, multiple: true, direct_upload: true, class: "form-control", id: "formFileMultiple"
 
-  p Award
+  div class="question-links mt-4"
+    div class="my-2"
+      | Links:
 
-  .award
-   = f.fields_for :award do |a|
-     p
-       = a.label :name, 'Award name'
-       br
-       = a.text_field :name
-     p
-       = a.label :image
-       br
-       = a.file_field :image, direct_upload: true
+    div class="p-3 bg-light rounded border"
+      = f.fields_for :links do |l|
+        = render 'shared/link_fields', f: l
 
-  p Links
-  
-  .question-links
-    = f.fields_for :links do |l|
-      = render 'shared/link_fields', f: l
+      .links
+        = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
 
-    .links
-      = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
+  div class="award mt-4"
+    div class="my-2"
+      | Award for best answer:
 
-  p= f.submit 'Ask'
+    div class="p-3 bg-light rounded border"
+      = f.fields_for :award do |a|
+        p
+          = a.label :name, 'Award name'
+          br
+          = a.text_field :name, class: "form-control"
+        p
+          = a.label :image
+          br
+          = a.file_field :image, direct_upload: true, class: "form-control", id: "formFileMultiple"
+
+  p= f.submit 'Ask', class: 'btn btn-primary mt-3'

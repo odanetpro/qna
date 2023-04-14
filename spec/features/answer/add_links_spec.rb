@@ -65,6 +65,7 @@ feature 'User can add links to answer', "
 
       click_button 'Post Your Answer'
 
+      sleep 2
       expect(page).to_not have_link 'Wrong link', href: 'yandex'
       expect(page).to have_content 'url is invalid'
     end
@@ -76,6 +77,8 @@ feature 'User can add links to answer', "
       fill_in 'Url', with: gist_url
 
       click_button 'Post Your Answer'
+
+      sleep 3
 
       within('.answers .gist-content') do
         expect(page).to have_content "puts 'Hello, world!'"
@@ -142,6 +145,7 @@ feature 'User can add links to answer', "
 
         click_on 'Save'
 
+        sleep 2
         expect(page).to have_link 'Google', href: google_url
         expect(page).to have_link 'Yandex', href: yandex_url
       end

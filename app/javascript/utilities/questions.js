@@ -2,8 +2,8 @@ $(document).on('turbolinks:load', function() {
   $('.question-controls').on('click', '.edit-question-link', function(e) {
     e.preventDefault()
 
-    $(this).addClass('hidden')
-    $('.delete-question-link').addClass('hidden')
+    $(this).addClass('visually-hidden')
+    $('.delete-question-link').addClass('visually-hidden')
     $('form#edit-question').removeClass('hidden')
 
     $('form#edit-question #question_files').prop('disabled', false)

@@ -11,7 +11,7 @@ document.addEventListener('animationstart', function(event) {
 
       let gistContent = ""
       oneGist.eachFile(function (file) {
-        gistContent += "<div class='gist-content'>" + file.content + "</div>"
+        gistContent += "<div class='gist-content d-inline'>" + file.content + "</div>"
       })
 
       $(event.target).replaceWith(gistContent)

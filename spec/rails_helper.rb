@@ -24,6 +24,17 @@ Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f 
 Dir[Rails.root.join('spec', 'models', 'concerns', '**', '*.rb')].sort.each { |f| require f }
 Dir[Rails.root.join('spec', 'controllers', 'concerns', '**', '*.rb')].sort.each { |f| require f }
 
+Capybara.register_driver :selenium do |app|
+  browser_options = ::Selenium::WebDriver::Firefox::Options.new()
+  browser_options.args << '--headless'
+
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :firefox,
+    options: browser_options
+  )
+end
+
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
 begin

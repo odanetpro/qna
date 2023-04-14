@@ -80,6 +80,8 @@ feature 'User can edit his questions', "
         attach_file 'question[files][]', Rails.root.join('spec/factories/questions.rb')
         click_on 'Save'
 
+        sleep 5
+
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
         expect(page).to have_link 'questions.rb'

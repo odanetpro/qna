@@ -1,16 +1,16 @@
-= form_with model: question, class: 'hidden', html: { id: "edit-question" }, local: false do |f|
+= form_with model: question, class: 'hidden p-3 bg-light rounded border', html: { id: "edit-question" }, local: false do |f|
   p
     = f.label :title
     br
-    = f.text_field :title
+    = f.text_field :title, class: "form-control"
   p
     = f.label :body
     br
-    = f.text_area :body
+    = f.text_area :body, class: "form-control"
   p
     = 'Add files'
     br
-    = f.file_field :files, multiple: true, direct_upload: true
+    = f.file_field :files, multiple: true, direct_upload: true, class: "form-control", id: "formFileMultiple"
 
   div
     = f.fields_for :links do |l|
@@ -19,4 +19,4 @@
     .links
       = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
           
-  p= f.submit 'Save'
+  div= f.submit 'Save', class: 'btn btn-secondary mt-3'
