@@ -32,6 +32,7 @@ gem 'devise'
 
 gem 'omniauth'
 gem 'omniauth-github'
+gem 'omniauth-vkontakte'
 gem 'omniauth-rails_csrf_protection'
 
 # Reduces boot times through caching; required in config/boot.rb
