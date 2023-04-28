@@ -9,5 +9,11 @@ FactoryBot.define do
     email
     password { '12345678' }
     password_confirmation { '12345678' }
+
+    after(:create) { |user| user.confirm }
+
+    trait :unconfirmed do
+      confirmed { false }
+    end
   end
 end
