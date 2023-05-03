@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   root to: 'questions#index'
 
   get 'users/:user_id/awards', to: 'awards#user_awards', as: :user_awards
+  post 'users/noemail_signup', to: 'users#noemail_signup', as: :noemail_signup
 
   concern :votable do
     member do

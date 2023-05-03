@@ -2,24 +2,43 @@
 
 class OauthCallbacksController < Devise::OmniauthCallbacksController
   def github
-    @user = User.find_for_oauth(request.env['omniauth.auth'])
+    callback_for('Github')
+  end
+
+  def vkontakte
+    callback_for('Vkontakte')
+  end
+
+  private
+
+  def callback_for(provider)
+    @user = User.find_for_oauth(auth)
 
     if @user&.persisted?
       sign_in_and_redirect @user, event: :authentication
-      set_flash_message(:notice, :success, kind: 'Github') if is_navigational_format?
+      set_flash_message(:notice, :success, kind: provider) if is_navigational_format?
+    elsif no_email?
+      enter_email
     else
       redirect_to root_path, alert: 'Something went wrong'
     end
   end
 
-  def vkontakte
-    @user = User.find_for_oauth(request.env['omniauth.auth'])
+  def auth
+    @auth ||= request.env['omniauth.auth']
+  end
 
-    if @user&.persisted?
-      sign_in_and_redirect @user, event: :authentication
-      set_flash_message(:notice, :success, kind: 'Vkontakte') if is_navigational_format?
-    else
-      redirect_to root_path, alert: 'Something went wrong'
-    end
+  def no_email?
+    !auth[:info]&.dig(:email)
+  end
+
+  def set_oauth_session
+    session[:oauth] = { provider: auth[:provider], uid: auth[:uid].to_s }
+  end
+
+  def enter_email
+    set_oauth_session
+    flash[:alert] = 'Please enter your email address to complete registration.'
+    render template: 'users/noemail_signup'
   end
 end
