@@ -27,7 +27,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
 
     if @question.save
-      redirect_to @question, notice: 'Your question successfully created.'
+      redirect_to @question, notice: t('.success')
     else
       render :new
     end
@@ -40,7 +40,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     question.destroy
-    redirect_to questions_path, notice: 'Your question deleted.'
+    redirect_to questions_path, notice: t('.success')
   end
 
   def delete_file

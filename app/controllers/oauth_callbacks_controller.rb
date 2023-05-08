@@ -20,7 +20,7 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
     elsif no_email?
       enter_email
     else
-      redirect_to root_path, alert: 'Something went wrong'
+      redirect_to root_path, alert: t('oauth.unknown_error')
     end
   end
 
@@ -38,7 +38,7 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
 
   def enter_email
     set_oauth_session
-    flash[:alert] = 'Please enter your email address to complete registration.'
+    flash[:alert] = t('oauth.enter_email')
     render template: 'users/noemail_signup'
   end
 end

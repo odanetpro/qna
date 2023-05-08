@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   skip_authorization_check
 
   def noemail_signup
-    redirect_to root_path, alert: 'Wrong auth params' and return unless oauth_is_set?
+    redirect_to root_path, alert: t('.wrong_params') and return unless oauth_is_set?
 
     password = Devise.friendly_token[0, 20]
     @user = User.new(email: user_params[:email], password: password, password_confirmation: password)
@@ -13,8 +13,7 @@ class UsersController < ApplicationController
       @user.create_authorization(oauth)
 
       # after saving a new user, devise sends a confirmation email
-      redirect_to root_path,
-                  notice: 'A message with a confirmation link has been sent to your email address. Please follow the link to activate your account. After confirmation, sign in again.'
+      redirect_to root_path, notice: t('.confirmation_sent')
     else
       render :noemail_signup
     end
