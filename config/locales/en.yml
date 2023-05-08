@@ -1,33 +1,33 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   'true': 'foo'
-#
-# To learn more, please read the Rails Internationalization guide
-# available at https://guides.rubyonrails.org/i18n.html.
-
 en:
-  hello: "Hello world"
+  general:
+    app_title: 'QnA'
+
+    menu:
+      link_questions: 'Questions'
+      link_my_award: 'My award'
+      link_sign_in: 'Sign in'
+      link_sign_out: 'Sign out'
+      link_sign_up: 'Sign up'
+
+  oauth:
+    unknown_error: 'Something went wrong'
+    enter_email: 'Please enter your email address to complete registration.'
+
+  questions:
+    create:
+      success: 'Your question successfully created.'
+    destroy:
+      success: 'Your question deleted.'
+    show:
+      confirm: 'Are you sure?'
+
+  answers:
+    create:
+      success: 'Your answer successfully created!'
+    destroy:
+      success: 'Your answer deleted.'
+
+  users:
+    noemail_signup:
+      wrong_params: 'Wrong auth params'
+      confirmation_sent: 'A message with a confirmation link has been sent to your email address. Please follow the link to activate your account. After confirmation, sign in again.'
