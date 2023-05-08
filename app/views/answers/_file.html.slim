@@ -1,6 +1,6 @@
 p id= "file-#{file.id}"
   = link_to file.filename.to_s, url_for(file)
-  - if answer.author_id == current_user&.id
+  - if can?(:delete_file, answer)
     |  
     = link_to svg_icon_remove_file,
               delete_file_answer_path(answer, file),

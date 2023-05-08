@@ -4,6 +4,8 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   after_action :publish_comment, only: :create
 
+  authorize_resource
+
   def create
     @comment = commentable.comments.create(comment_params)
   end

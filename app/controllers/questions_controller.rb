@@ -4,7 +4,10 @@ class QuestionsController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: %i[index show]
+  before_action :question, only: %i[update destroy delete_file]
   after_action :publish_question, only: :create
+
+  authorize_resource
 
   def index
     @questions = Question.all
@@ -31,22 +34,16 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    return unless question.author_id == current_user&.id
-
     question.files.attach(question_params['files']) if question_params['files']
     question.update(question_params.except(:files))
   end
 
   def destroy
-    return unless question.author_id == current_user&.id
-
     question.destroy
     redirect_to questions_path, notice: 'Your question deleted.'
   end
 
   def delete_file
-    return unless question.author_id == current_user&.id
-
     @attached_file = question.files.find_by(id: params[:file_id])
     @attached_file.purge
   end

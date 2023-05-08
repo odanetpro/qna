@@ -23,12 +23,12 @@ feature 'User can view the awards he has received', "
       expect(page).to have_content award.name
     end
 
-    scenario " tries to view a list of other users's awards" do
+    scenario "tries to view a list of other users's awards" do
       other_user = create(:user)
       create(:award, question: question, image: image, user: other_user)
       visit user_awards_path(other_user)
 
-      expect(page).to have_content "You don't have permission to view this user's awards"
+      expect(page).to have_content 'You are not authorized to access this page.'
     end
   end
 

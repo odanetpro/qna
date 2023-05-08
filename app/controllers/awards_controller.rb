@@ -2,14 +2,17 @@
 
 class AwardsController < ApplicationController
   before_action :authenticate_user!, only: :user_awards
+  before_action :set_user, only: :user_awards
+
+  authorize_resource
 
   def user_awards
-    @user = User.find(params[:user_id])
+    @awards = @user.awards
+  end
 
-    if @user.id == current_user&.id
-      @awards = @user.awards
-    else
-      redirect_to root_path, alert: "You don't have permission to view this user's awards"
-    end
+  private
+
+  def set_user
+    @user = User.find(params[:user_id])
   end
 end

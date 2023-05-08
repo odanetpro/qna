@@ -30,7 +30,7 @@ div class = "question" id = "#{question.id}"
             = question.award.name
 
       div class="question-controls mt-3"
-        - if question.author_id == current_user&.id
+        - if can?(:update, question) && can?(:destroy, question)
           div class="btn-group"
             = link_to 'Edit', '#', class: 'edit-question-link btn btn-outline-secondary'
             = link_to 'Delete',

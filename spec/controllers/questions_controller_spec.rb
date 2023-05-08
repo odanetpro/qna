@@ -127,6 +127,18 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :update
       end
     end
+
+    it 'tries to update some one else question' do
+      login(user)
+
+      other_question = create(:question, author: create(:user))
+      patch :update, params: { id: other_question, question: { title: 'NewTitle', body: 'NewBody' } }, format: :js
+
+      other_question.reload
+
+      expect(other_question.title).to_not eq 'NewTitle'
+      expect(other_question.body).to_not eq 'NewBody'
+    end
   end
 
   describe 'DELETE #destroy' do
