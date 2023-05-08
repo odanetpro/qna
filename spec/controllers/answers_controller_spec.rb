@@ -65,6 +65,16 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :update
       end
     end
+
+    it 'tries to update some one else answer' do
+      login(user)
+
+      other_answer = create(:answer, author: create(:user))
+      patch :update, params: { id: other_answer, answer: { body: 'new body' } }, format: :js
+
+      other_answer.reload
+      expect(other_answer.body).to_not eq 'new body'
+    end
   end
 
   describe 'DELETE #destroy' do

@@ -21,7 +21,7 @@ li class = "answer-#{answer.id} border-top pt-3"
             = render partial: 'shared/link', collection: answer.links
 
       div class="mt-3"
-        - if answer.author_id == current_user&.id
+        - if can?(:update, answer) && can?(:destroy, answer)
           = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
           |  
           = link_to 'Delete',
@@ -30,7 +30,7 @@ li class = "answer-#{answer.id} border-top pt-3"
                     remote: true,
                     class: 'delete-answer-link',
                     data: { confirm: 'Are you sure?' }
-        - if answer.question.author_id == current_user&.id
+        - if can?(:mark_best, answer)
           |  
           = link_to 'Best',
                     mark_best_answer_path(answer),

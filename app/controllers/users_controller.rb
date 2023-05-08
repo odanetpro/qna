@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  skip_authorization_check
+
   def noemail_signup
     redirect_to root_path, alert: 'Wrong auth params' and return unless oauth_is_set?
 

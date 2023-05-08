@@ -4,35 +4,30 @@ class AnswersController < ApplicationController
   include Voted
 
   before_action :authenticate_user!
+  before_action :answer, only: %i[update destroy mark_best delete_file]
   after_action :publish_answer, only: :create
+
+  authorize_resource
 
   def create
     @answer = question.answers.create(answer_params)
   end
 
   def update
-    return unless answer.author_id == current_user&.id
-
     answer.files.attach(answer_params['files']) if answer_params['files']
     answer.update(answer_params.except(:files))
   end
 
   def destroy
-    return unless answer.author_id == current_user&.id
-
     answer.destroy
   end
 
   def mark_best
-    return unless answer.question.author_id == current_user&.id
-
     question.award&.update(user_id: answer.author.id)
     answer.mark_as_best
   end
 
   def delete_file
-    return unless answer.author_id == current_user&.id
-
     @attached_file = answer.files.find_by(id: params[:file_id])
     @attached_file.purge
   end

@@ -1,4 +1,4 @@
-  - if user_signed_in? && votable.author_id != current_user&.id
+  - if user_signed_in? && cannot?(:vote_up, votable)
     = link_to svg_icon_caret_up_fill,
               polymorphic_path([:vote_up, votable]),
               method: :post,
@@ -9,7 +9,7 @@
   div class="rating-value text-muted fs-3 mt-1"
     = rating(votable)
 
-  - if user_signed_in? && votable.author_id != current_user&.id  
+  - if user_signed_in? && cannot?(:vote_down, votable)
     = link_to svg_icon_caret_down_fill,
               polymorphic_path([:vote_down, votable]),
               method: :post,
