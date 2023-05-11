@@ -94,5 +94,10 @@ RSpec.describe Ability, type: :model do
         expect(ability).to_not be_able_to(:user_awards, Award)
       end
     end
+
+    context 'Profile' do
+      it { should be_able_to :me, user }
+      it { should_not be_able_to :me, other }
+    end
   end
 end
