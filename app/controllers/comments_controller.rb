@@ -31,7 +31,7 @@ class CommentsController < ApplicationController
 
     ActionCable.server.broadcast(
       "comments_for_question_#{question_id}_and_for_its_answers",
-      ApplicationController.render(json: { comment: @comment })
+      ApplicationController.render(json: { comment: @comment }, scope: current_user)
     )
   end
 end

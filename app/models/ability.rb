@@ -32,6 +32,7 @@ class Ability
 
     can :create, [Question, Answer, Comment]
     can %i[update destroy delete_file vote_up vote_down], [Question, Answer], author_id: user.id
+    can :me, User, id: user.id
   end
 
   def mark_best_ability

@@ -38,6 +38,8 @@ gem 'omniauth-rails_csrf_protection'
 gem 'cancancan'
 
 gem 'doorkeeper'
+gem 'active_model_serializers', '~> 0.10'
+gem 'oj'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false

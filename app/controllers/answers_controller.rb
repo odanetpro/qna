@@ -56,7 +56,7 @@ class AnswersController < ApplicationController
       "answers_for_question_#{question.id}",
       ApplicationController.render(json: { question: question, answer: answer, answer_files: answer_files,
                                            answer_links: answer_links, answer_vote: answer_vote,
-                                           answer_controls: answer_controls }.to_json)
+                                           answer_controls: answer_controls }.to_json, scope: current_user)
     )
   end
 
