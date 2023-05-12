@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 class QuestionSerializer < ActiveModel::Serializer
-  attributes :id, :title, :body, :author_id, :created_at, :updated_at, :short_title
-  has_many :answers
-  belongs_to :author
+  include Rails.application.routes.url_helpers
+  attributes :id, :title, :body, :links, :comments, :author_id, :created_at, :updated_at, :files_urls
 
-  def short_title
-    object.title.truncate(7)
+  def files_urls
+    object.files.map { |file| rails_blob_path(file, only_path: true) }
   end
 end

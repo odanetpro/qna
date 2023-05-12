@@ -61,4 +61,44 @@ describe 'Questions API', type: :request do
       end
     end
   end
+
+  describe '/api/v1/questions/:id' do
+    let(:question) { create(:question) }
+    let(:api_path) { api_v1_question_path(question) }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :get }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+      let(:file) { Rack::Test::UploadedFile.new(Rails.root.join('spec/rails_helper.rb')) }
+
+      before do
+        question.links << create_list(:link, 2, linkable: question)
+        question.comments << create_list(:comment, 2, commentable: question)
+        question.files.attach(file)
+
+        get api_path, params: { access_token: access_token.token }, headers: headers
+      end
+
+      it 'returns all public fields' do
+        %w[id title body author_id created_at updated_at].each do |attr|
+          expect(json['question'][attr]).to eq question.send(attr).as_json
+        end
+      end
+
+      it 'returns all links' do
+        expect(json['question']['links'].size).to eq 2
+      end
+
+      it 'returns all comments' do
+        expect(json['question']['comments'].size).to eq 2
+      end
+
+      it 'returns files urls' do
+        expect(json['question']['files_urls'].first).to eq rails_blob_path(question.files.first, only_path: true)
+      end
+    end
+  end
 end
