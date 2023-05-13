@@ -4,8 +4,7 @@ require 'rails_helper'
 
 describe 'Questions API', type: :request do
   let(:headers) do
-    { 'CONTENT_TYPE' => 'application/json',
-      'ACCEPT' => 'application/json' }
+    { 'ACCEPT' => 'application/json' }
   end
 
   describe '/api/v1/questions' do
@@ -98,6 +97,58 @@ describe 'Questions API', type: :request do
 
       it 'returns files urls' do
         expect(json['question']['files_urls'].first).to eq rails_blob_path(question.files.first, only_path: true)
+      end
+    end
+  end
+
+  describe 'POST /api/v1/questions/' do
+    let(:api_path) { api_v1_questions_path }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :post }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+
+      context 'with valid attributes' do
+        it 'save a new question in the database' do
+          expect do
+            post api_path, params: { access_token: access_token.token, question: attributes_for(:question) },
+                           headers: headers
+          end.to change(Question, :count).by(1)
+        end
+
+        it 'returns created object' do
+          post api_path, params: { access_token: access_token.token, question: attributes_for(:question) },
+                         headers: headers
+
+          %w[id title body author_id created_at updated_at].each do |attr|
+            expect(json['question']).to have_key(attr)
+          end
+        end
+      end
+
+      context 'with invalid attributes' do
+        it 'does not save the question' do
+          expect do
+            post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) },
+                           headers: headers
+          end.to_not change(Question, :count)
+        end
+
+        before do
+          post api_path, params: { access_token: access_token.token, question: attributes_for(:question, :invalid) },
+                         headers: headers
+        end
+
+        it 'returns errors' do
+          expect(json['errors'].size).to be > 0
+        end
+
+        it 'returns 422 status' do
+          expect(response.status).to eq 422
+        end
       end
     end
   end
