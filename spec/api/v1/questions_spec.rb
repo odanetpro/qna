@@ -207,4 +207,37 @@ describe 'Questions API', type: :request do
       end
     end
   end
+
+  describe 'DELETE /api/v1/questions/:id' do
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+      let(:api_path) { api_v1_question_path(create(:question)) }
+    end
+
+    context 'authorized' do
+      let(:author) { create(:user) }
+      let!(:question) { create(:question, author: author) }
+      let(:api_path) { api_v1_question_path(question) }
+
+      context 'author' do
+        let(:access_token) { create(:access_token, resource_owner_id: author.id) }
+
+        it 'deletes the question' do
+          expect do
+            delete api_path, params: { access_token: access_token.token, id: question }, headers: headers
+          end.to change(Question, :count).by(-1)
+        end
+      end
+
+      context 'not author' do
+        let(:access_token) { create(:access_token, resource_owner_id: create(:user).id) }
+
+        it 'tries to delete question' do
+          expect do
+            delete api_path, params: { access_token: access_token.token, id: question }, headers: headers
+          end.to_not change(Question, :count)
+        end
+      end
+    end
+  end
 end
