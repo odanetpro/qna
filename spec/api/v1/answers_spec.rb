@@ -4,8 +4,7 @@ require 'rails_helper'
 
 describe 'Answers API', type: :request do
   let(:headers) do
-    { 'CONTENT_TYPE' => 'application/json',
-      'ACCEPT' => 'application/json' }
+    { 'ACCEPT' => 'application/json' }
   end
 
   describe '/api/v1/questions/:question_id/answers' do
@@ -64,6 +63,65 @@ describe 'Answers API', type: :request do
 
       it 'returns files urls' do
         expect(json['answer']['files_urls'].first).to eq rails_blob_path(answer.files.first, only_path: true)
+      end
+    end
+  end
+
+  describe 'POST /api/v1/questions/:question_id/answers' do
+    let(:question) { create(:question) }
+    let(:api_path) { api_v1_question_answers_path(question) }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :post }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+
+      context 'with valid attributes' do
+        it 'save a new answer in database' do
+          expect do
+            post api_path,
+                 params: { access_token: access_token.token, question_id: question, answer: attributes_for(:answer) },
+                 headers: headers
+          end.to change(Answer, :count).by(1)
+        end
+
+        it 'returns created object' do
+          post api_path,
+               params: { access_token: access_token.token, question_id: question, answer: attributes_for(:answer) },
+               headers: headers
+
+          %w[id body question_id author_id created_at updated_at].each do |attr|
+            expect(json['answer']).to have_key(attr)
+          end
+        end
+      end
+
+      context 'with invalid attributes' do
+        it 'does not save the question' do
+          expect do
+            post api_path,
+                 params: { access_token: access_token.token, question_id: question,
+                           answer: attributes_for(:answer, :invalid) },
+                 headers: headers
+          end.to_not change(Answer, :count)
+        end
+
+        before do
+          post api_path,
+               params: { access_token: access_token.token, question_id: question,
+                         answer: attributes_for(:answer, :invalid) },
+               headers: headers
+        end
+
+        it 'returns errors' do
+          expect(json['errors'].size).to be > 0
+        end
+
+        it 'returns 422 status' do
+          expect(response.status).to eq 422
+        end
       end
     end
   end
