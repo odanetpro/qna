@@ -145,7 +145,6 @@ describe 'Answers API', type: :request do
           it 'changes answer attributes' do
             patch api_path, params: { access_token: access_token.token,
                                       id: answer,
-                                      question_id: question,
                                       answer: { body: 'NewBody' } },
                             headers: headers
 
@@ -157,7 +156,6 @@ describe 'Answers API', type: :request do
           before do
             patch api_path, params: { access_token: access_token.token,
                                       id: answer,
-                                      question_id: question,
                                       answer: attributes_for(:answer, :invalid) },
                             headers: headers
           end
@@ -169,6 +167,40 @@ describe 'Answers API', type: :request do
           it 'returns 422 status' do
             expect(response.status).to eq 422
           end
+        end
+      end
+    end
+  end
+
+  describe 'DELETE /api/v1/answers/:id' do
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+      let(:api_path) { api_v1_answer_path(create(:answer)) }
+    end
+
+    context 'authorized' do
+      let(:author) { create(:user) }
+      let(:question) { create(:question) }
+      let!(:answer) { create(:answer, author: author, question: question) }
+      let(:api_path) { api_v1_answer_path(answer) }
+
+      context 'author' do
+        let(:access_token) { create(:access_token, resource_owner_id: author.id) }
+
+        it 'deletes the answer' do
+          expect do
+            delete api_path, params: { access_token: access_token.token, id: answer }, headers: headers
+          end.to change(Answer, :count).by(-1)
+        end
+      end
+
+      context 'not author' do
+        let(:access_token) { create(:access_token, resource_owner_id: create(:user).id) }
+
+        it 'tries to delete answer' do
+          expect do
+            delete api_path, params: { access_token: access_token.token, id: answer }, headers: headers
+          end.to_not change(Answer, :count)
         end
       end
     end
