@@ -3,7 +3,7 @@
 module Api
   module V1
     class QuestionsController < BaseController
-      before_action :question, only: %i[show create update]
+      before_action :question, only: %i[show create update destroy]
       authorize_resource
 
       def index
@@ -29,6 +29,11 @@ module Api
         else
           render json: { errors: @question.errors.full_messages }, status: :unprocessable_entity
         end
+      end
+
+      def destroy
+        @question.destroy
+        render json: @question, serializer: QuestionSerializer
       end
 
       private
