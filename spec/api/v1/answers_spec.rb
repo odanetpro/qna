@@ -125,4 +125,52 @@ describe 'Answers API', type: :request do
       end
     end
   end
+
+  describe 'PATCH /api/v1/answers/:id' do
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :patch }
+      let(:api_path) { api_v1_answer_path(create(:answer)) }
+    end
+
+    context 'authorized' do
+      let(:author) { create(:user) }
+      let(:question) { create(:question) }
+      let(:answer) { create(:answer, author: author, question: question) }
+      let(:api_path) { api_v1_answer_path(answer) }
+
+      context 'author' do
+        let(:access_token) { create(:access_token, resource_owner_id: author.id) }
+
+        context 'with valid attributes' do
+          it 'changes answer attributes' do
+            patch api_path, params: { access_token: access_token.token,
+                                      id: answer,
+                                      question_id: question,
+                                      answer: { body: 'NewBody' } },
+                            headers: headers
+
+            expect(json['answer']['body']).to eq 'NewBody'
+          end
+        end
+
+        context 'with invalid attributes' do
+          before do
+            patch api_path, params: { access_token: access_token.token,
+                                      id: answer,
+                                      question_id: question,
+                                      answer: attributes_for(:answer, :invalid) },
+                            headers: headers
+          end
+
+          it 'does not change answer' do
+            expect(question.body).to eq 'MyText'
+          end
+
+          it 'returns 422 status' do
+            expect(response.status).to eq 422
+          end
+        end
+      end
+    end
+  end
 end
