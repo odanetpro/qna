@@ -25,6 +25,10 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
+gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'whenever', require: false
+
 gem 'tilt', '~> 2.0', '>= 2.0.11'
 gem 'slim-rails', '~> 3.6', '>= 3.6.1'
 

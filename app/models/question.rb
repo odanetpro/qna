@@ -17,6 +17,8 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
+  scope :for_last_day, -> { where(created_at: 1.day.ago..Time.current) }
+
   def reset_best_answer
     self.best_answer = nil
     save!

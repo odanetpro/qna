@@ -163,6 +163,7 @@ describe 'Questions API', type: :request do
       let(:author) { create(:user) }
       let(:question) { create(:question, author: author) }
       let(:api_path) { api_v1_question_path(question) }
+      let!(:question_title) { question.title }
 
       context 'author' do
         let(:access_token) { create(:access_token, resource_owner_id: author.id) }
@@ -184,7 +185,7 @@ describe 'Questions API', type: :request do
           end
 
           it 'does not change question' do
-            expect(question.title).to eq 'MyString'
+            expect(question.title).to eq question_title
             expect(question.body).to eq 'MyText'
           end
 
@@ -201,7 +202,7 @@ describe 'Questions API', type: :request do
           patch api_path, params: { access_token: access_token.token, id: question, question: { title: 'NewTitle', body: 'NewBody' } },
                           headers: headers
 
-          expect(question.title).to eq 'MyString'
+          expect(question.title).to eq question_title
           expect(question.body).to eq 'MyText'
         end
       end

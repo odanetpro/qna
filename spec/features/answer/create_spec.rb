@@ -112,7 +112,7 @@ feature 'User can create an answer to the question', "
         click_button 'Post Your Answer'
 
         expect(current_path).to eq question_path(new_question)
-        expect(page).to have_content question.title
+        expect(page).to have_content new_question.title
 
         within '.answers' do
           expect(page).to have_content 'Test answer'

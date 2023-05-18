@@ -128,9 +128,8 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it 'author of the best answer receives award' do
-      image = Rack::Test::UploadedFile.new(Rails.root.join('spec/attachments/award.png'))
       question = create(:question, author: user)
-      create(:award, question: question, image: image)
+      create(:award, question: question)
       answer = create(:answer, question: question)
 
       post :mark_best, params: { id: answer }, format: :js
