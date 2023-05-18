@@ -31,3 +31,7 @@ en:
     noemail_signup:
       wrong_params: 'Wrong auth params'
       confirmation_sent: 'A message with a confirmation link has been sent to your email address. Please follow the link to activate your account. After confirmation, sign in again.'
+
+  daily_digest_mailer:
+    digest:
+      subject: 'Daily Digest from QnA'
