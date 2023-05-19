@@ -1,4 +1,6 @@
 <% if current_user.subscribed_for_question?(@question) %>
   $('.flash-message').html('<div class="my-3"><p class="alert alert-success", role="alert"> <%= t('.success') %></p></div>')
   $('.subscribe-question-link').remove()
+
+  $('.btn-group').append('<%= link_to 'Unsubscribe', unsubscribe_question_path(@question), method: :delete, remote: true, class: 'unsubscribe-question-link btn btn-outline-secondary'%>')
 <% end %>

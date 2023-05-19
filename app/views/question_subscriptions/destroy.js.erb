@@ -1,0 +1,6 @@
+<% unless @subscription.persisted? %>
+  $('.flash-message').html('<div class="my-3"><p class="alert alert-success", role="alert"> <%= t('.success') %></p></div>')
+  $('.unsubscribe-question-link').remove()
+
+  $('.btn-group').append('<%= link_to 'Subscribe', subscribe_question_path(@question), method: :post, remote: true, class: 'subscribe-question-link btn btn-outline-secondary'%>')
+<% end %>

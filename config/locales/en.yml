@@ -35,6 +35,8 @@ en:
   question_subscriptions:
     create:
       success: 'You are subscribed to updates'
+    destroy:
+      success: 'You are unsubscribed from updates'
 
   daily_digest_mailer:
     digest:

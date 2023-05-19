@@ -25,4 +25,34 @@ RSpec.describe QuestionSubscriptionsController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    describe 'Authenticated user' do
+      before { question.subscribers << user }
+
+      it 'subscriber unsubscribe from question' do
+        login(user)
+
+        expect do
+          delete :destroy, params: { id: question }, format: :js
+        end.to change(QuestionSubscription, :count).by(-1)
+      end
+
+      it 'not subscriber tries to unsubscribe from question' do
+        login(create(:user))
+
+        expect do
+          delete :destroy, params: { id: question }, format: :js
+        end.to change(QuestionSubscription, :count).by(0)
+      end
+    end
+
+    describe 'Unauthenticated user' do
+      it 'tries to unsubscribe from question' do
+        expect do
+          delete :destroy, params: { id: question }, format: :js
+        end.to change(QuestionSubscription, :count).by(0)
+      end
+    end
+  end
 end

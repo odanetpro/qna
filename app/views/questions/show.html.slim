@@ -39,7 +39,13 @@ div class = "question" id = "#{question.id}"
                       class: 'delete-question-link btn btn-outline-secondary',
                       data: { confirm: t('.confirm') }
           - if can?(:create, QuestionSubscription)
-            - unless current_user.subscribed_for_question?(question)
+            - if current_user.subscribed_for_question?(question)
+              = link_to 'Unsubscribe',
+                        unsubscribe_question_path(question),
+                        method: :delete,
+                        remote: true,
+                        class: 'unsubscribe-question-link btn btn-outline-secondary'
+            -else
               = link_to 'Subscribe',
                         subscribe_question_path(question),
                         method: :post,
