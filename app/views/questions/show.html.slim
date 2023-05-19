@@ -30,14 +30,21 @@ div class = "question" id = "#{question.id}"
             = question.award.name
 
       div class="question-controls mt-3"
-        - if can?(:update, question) && can?(:destroy, question)
-          div class="btn-group"
+        div class="btn-group"
+          - if can?(:update, question) && can?(:destroy, question)
             = link_to 'Edit', '#', class: 'edit-question-link btn btn-outline-secondary'
             = link_to 'Delete',
                       question_path(question),
                       method: :delete,
                       class: 'delete-question-link btn btn-outline-secondary',
                       data: { confirm: t('.confirm') }
+          - if can?(:create, QuestionSubscription)
+            - unless current_user.subscribed_for_question?(question)
+              = link_to 'Subscribe',
+                        subscribe_question_path(question),
+                        method: :post,
+                        remote: true,
+                        class: 'subscribe-question-link btn btn-outline-secondary'
 
         .question-errors
 

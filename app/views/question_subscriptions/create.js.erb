@@ -1,0 +1,4 @@
+<% if current_user.subscribed_for_question?(@question) %>
+  $('.flash-message').html('<div class="my-3"><p class="alert alert-success", role="alert"> <%= t('.success') %></p></div>')
+  $('.subscribe-question-link').remove()
+<% end %>
