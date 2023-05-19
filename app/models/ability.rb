@@ -30,7 +30,7 @@ class Ability
     destroy_links_ability
     show_user_awards_ability
 
-    can :create, [Question, Answer, Comment]
+    can :create, [Question, Answer, Comment, QuestionSubscription]
     can %i[update destroy delete_file vote_up vote_down], [Question, Answer], author_id: user.id
     can :me, User, id: user.id
   end

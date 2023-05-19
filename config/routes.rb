@@ -36,6 +36,7 @@ Rails.application.routes.draw do
 
     member do
       delete 'delete_file/:file_id', action: :delete_file, as: :delete_file
+      post 'subscribe', to: 'question_subscriptions#create', as: :subscribe
     end
   end
 

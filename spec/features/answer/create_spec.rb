@@ -149,6 +149,23 @@ feature 'User can create an answer to the question', "
     expect(current_email).to have_content 'Test answer'
   end
 
+  scenario 'The subscribers of the question receives email notification after answer creation', js: true do
+    question.subscribers << user
+    clear_emails
+
+    sign_in(user)
+    visit question_path(question)
+
+    fill_in 'answer[body]', with: 'Test answer'
+
+    perform_enqueued_jobs do
+      click_button 'Post Your Answer'
+    end
+
+    open_email(user.email)
+    expect(current_email).to have_content 'Test answer'
+  end
+
   scenario 'Unauthenticated user tries answer the question' do
     visit question_path(question)
     click_button 'Post Your Answer'

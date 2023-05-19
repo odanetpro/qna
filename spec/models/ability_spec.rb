@@ -99,5 +99,9 @@ RSpec.describe Ability, type: :model do
       it { should be_able_to :me, user }
       it { should_not be_able_to :me, other }
     end
+
+    context 'QuestionSubscription' do
+      it { should be_able_to :create, QuestionSubscription }
+    end
   end
 end
