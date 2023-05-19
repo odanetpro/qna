@@ -13,6 +13,8 @@ class User < ApplicationRecord
   has_many :awards, dependent: :nullify
   has_many :votes, dependent: :destroy
   has_many :authorizations, dependent: :destroy
+  has_many :question_subscriptions, dependent: :destroy
+  has_many :subscribed_questions, through: :question_subscriptions, source: :question
 
   def self.find_for_oauth(auth)
     FindForOauthService.new(auth).call

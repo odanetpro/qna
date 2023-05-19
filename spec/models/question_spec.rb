@@ -8,6 +8,8 @@ RSpec.describe Question, type: :model do
   it_behaves_like 'commentable'
 
   it { should have_many(:answers).dependent(:destroy) }
+  it { should have_many(:question_subscriptions).dependent(:destroy) }
+  it { should have_many(:subscribers).through(:question_subscriptions).source(:user) }
   it { should have_one(:award).dependent(:destroy) }
   it { should belong_to(:author).required.class_name('User') }
   it { should belong_to(:best_answer).optional.class_name('Answer') }

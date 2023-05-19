@@ -9,6 +9,8 @@ RSpec.describe User, type: :model do
   it { should have_many(:awards).dependent(:nullify) }
   it { should have_many(:votes).dependent(:destroy) }
   it { should have_many(:authorizations).dependent(:destroy) }
+  it { should have_many(:question_subscriptions).dependent(:destroy) }
+  it { should have_many(:subscribed_questions).through(:question_subscriptions).source(:question) }
 
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }

@@ -11,6 +11,7 @@ class AnswersController < ApplicationController
 
   def create
     @answer = question.answers.create(answer_params)
+    NewAnswerNotificationJob.perform_now(@answer) if @answer.persisted?
   end
 
   def update
