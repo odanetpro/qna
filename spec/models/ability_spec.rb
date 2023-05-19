@@ -102,6 +102,7 @@ RSpec.describe Ability, type: :model do
 
     context 'QuestionSubscription' do
       it { should be_able_to :create, QuestionSubscription }
+      it { should be_able_to :destroy, QuestionSubscription }
     end
   end
 end

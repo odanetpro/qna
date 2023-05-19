@@ -21,6 +21,7 @@ feature 'User can subscribe to question updates', "
 
       find('.subscribe-question-link').click
 
+      expect(page).to have_css('.unsubscribe-question-link')
       expect(page).to_not have_css('.subscribe-question-link')
       expect(page).to have_content(I18n.t('question_subscriptions.create.success'))
     end
