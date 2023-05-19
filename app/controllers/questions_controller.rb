@@ -27,6 +27,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
 
     if @question.save
+      @question.subscribers << current_user
       redirect_to @question, notice: t('.success')
     else
       render :new

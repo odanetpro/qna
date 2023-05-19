@@ -130,6 +130,25 @@ feature 'User can create an answer to the question', "
     end
   end
 
+  scenario 'The author of the question receives email notification after answer creation', js: true do
+    subscribed_question = create(:question, author: user)
+    subscribed_question.subscribers << user
+
+    clear_emails
+
+    sign_in(user)
+    visit question_path(subscribed_question)
+
+    fill_in 'answer[body]', with: 'Test answer'
+
+    perform_enqueued_jobs do
+      click_button 'Post Your Answer'
+    end
+
+    open_email(user.email)
+    expect(current_email).to have_content 'Test answer'
+  end
+
   scenario 'Unauthenticated user tries answer the question' do
     visit question_path(question)
     click_button 'Post Your Answer'
