@@ -15,6 +15,16 @@ header
             li class="nav-item"
               = link_to t('general.menu.link_my_award'), user_awards_path(current_user), class: 'nav-link'
 
+        .search
+          = form_with url: search_path, class: 'd-flex  me-5', html: { role: 'search' }, local: true do |f|
+            = f.search_field :search_query, class: 'form-control me-2', placeholder: t('general.menu.search.placeholder')
+            = f.select :search_scope,
+                       %w[question],
+                       {},
+                       { class: 'btn btn-outline-light dropdown-toggle me-2' }
+
+            = f.submit t('general.menu.search.submit'), class: 'btn btn-outline-light'
+
         span class="navbar-text"
           - if user_signed_in?
             = current_user.email
