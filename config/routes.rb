@@ -56,4 +56,6 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  post 'search', to: 'searches#search', as: :search
 end

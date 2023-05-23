@@ -8,6 +8,9 @@ en:
       link_sign_in: 'Sign in'
       link_sign_out: 'Sign out'
       link_sign_up: 'Sign up'
+      search:
+        placeholder: 'Search...'
+        submit: 'Search'
 
   oauth:
     unknown_error: 'Something went wrong'

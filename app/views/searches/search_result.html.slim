@@ -1,0 +1,10 @@
+h1= 'Search results'
+
+- if @search_results.empty?
+  p= 'No matches'
+- else
+  ol
+    - @search_results.each do |result|
+      - if result.is_a?(Question)
+        li
+          = link_to result.title, question_path(result)
