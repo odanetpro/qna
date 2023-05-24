@@ -4,7 +4,7 @@ class SearchesController < ApplicationController
   authorize_resource class: false
 
   def search
-    @search_results = model_klass.search(params[:search_query])
+    @search_results = model_klass.search(Riddle.escape(params[:search_query]))
     render :search_result
   end
 
