@@ -16,3 +16,6 @@ h1= 'Search results'
         li
           p= link_to_commentable(result)
           p= result.body
+      - elsif result.is_a?(User)
+        li
+          p= result.email
