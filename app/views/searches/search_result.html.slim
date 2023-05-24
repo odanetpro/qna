@@ -12,3 +12,7 @@ h1= 'Search results'
         li
           p= link_to result.question.title, question_path(result.question)
           p= result.body
+      - elsif result.is_a?(Comment)
+        li
+          p= link_to_commentable(result)
+          p= result.body
