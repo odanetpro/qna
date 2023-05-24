@@ -11,6 +11,8 @@ class SearchesController < ApplicationController
   private
 
   def model_klass
+    return ThinkingSphinx if params[:search_scope] == 'all'
+
     @model_klass ||= params[:search_scope].classify.constantize
   end
 end
