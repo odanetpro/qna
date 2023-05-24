@@ -8,3 +8,7 @@ h1= 'Search results'
       - if result.is_a?(Question)
         li
           = link_to result.title, question_path(result)
+      - elsif result.is_a?(Answer)
+        li
+          p= link_to result.question.title, question_path(result.question)
+          p= result.body
