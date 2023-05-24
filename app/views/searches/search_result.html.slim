@@ -7,7 +7,7 @@ h1= 'Search results'
     - @search_results.each do |result|
       - if result.is_a?(Question)
         li
-          = link_to result.title, question_path(result)
+          p= link_to result.title, question_path(result)
       - elsif result.is_a?(Answer)
         li
           p= link_to result.question.title, question_path(result.question)
@@ -19,3 +19,11 @@ h1= 'Search results'
       - elsif result.is_a?(User)
         li
           p= result.email
+      - else
+        li
+          p= 'Undefined object'
+
+      p class="fst-italic text-secondary"
+        'object type: 
+        = result.class.to_s
+

@@ -19,7 +19,7 @@ header
           = form_with url: search_path, class: 'd-flex  me-5', html: { role: 'search' }, local: true do |f|
             = f.search_field :search_query, class: 'form-control me-2', placeholder: t('general.menu.search.placeholder')
             = f.select :search_scope,
-                       %w[question answer comment user],
+                       %w[question answer comment user all],
                        {},
                        { class: 'btn btn-outline-light dropdown-toggle me-2' }
 
