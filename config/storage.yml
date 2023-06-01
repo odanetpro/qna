@@ -8,11 +8,11 @@ local:
 
 yandex:
   service: S3
-  access_key_id: <%= ENV.fetch('YOUR_ACCESS_KEY_ID') %>
-  secret_access_key: <%= ENV.fetch('YOUR_SECRET_ACCESS_KEY') %>
+  access_key_id: <%= Rails.application.credentials.yandex_aws[:your_access_key_id] %>
+  secret_access_key: <%= Rails.application.credentials.yandex_aws[:your_secret_access_key] %>
   region: ru-central3
-  bucket: <%= ENV.fetch('BUCKET') %>
-  endpoint: <%= ENV.fetch('ENDPOINT') %>
+  bucket: <%= Rails.application.credentials.yandex_aws[:bucket] %>
+  endpoint: <%= Rails.application.credentials.yandex_aws[:endpoint]%>
   force_path_style: true
 
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
