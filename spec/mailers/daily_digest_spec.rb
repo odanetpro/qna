@@ -10,7 +10,7 @@ RSpec.describe DailyDigestMailer, type: :mailer do
     it 'renders the headers' do
       expect(mail.subject).to eq('Daily Digest from QnA')
       expect(mail.to).to eq([user.email])
-      expect(mail.from).to eq(['from@example.com'])
+      expect(mail.from).to eq([Rails.application.credentials.mailer[:from_email]])
     end
 
     it 'renders the body' do

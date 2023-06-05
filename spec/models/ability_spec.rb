@@ -63,17 +63,17 @@ RSpec.describe Ability, type: :model do
     end
 
     context 'Vote' do
-      it { should be_able_to :vote_up, create(:question, author: user) }
-      it { should_not be_able_to :vote_up, create(:question, author: other) }
+      it { should be_able_to :vote_up, create(:question, author: other) }
+      it { should_not be_able_to :vote_up, create(:question, author: user) }
 
-      it { should be_able_to :vote_down, create(:question, author: user) }
-      it { should_not be_able_to :vote_down, create(:question, author: other) }
+      it { should be_able_to :vote_down, create(:question, author: other) }
+      it { should_not be_able_to :vote_down, create(:question, author: user) }
 
-      it { should be_able_to :vote_up, create(:answer, author: user) }
-      it { should_not be_able_to :vote_up, create(:answer, author: other) }
+      it { should be_able_to :vote_up, create(:answer, author: other) }
+      it { should_not be_able_to :vote_up, create(:answer, author: user) }
 
-      it { should be_able_to :vote_down, create(:answer, author: user) }
-      it { should_not be_able_to :vote_down, create(:answer, author: other) }
+      it { should be_able_to :vote_down, create(:answer, author: other) }
+      it { should_not be_able_to :vote_down, create(:answer, author: user) }
     end
 
     context 'Link' do

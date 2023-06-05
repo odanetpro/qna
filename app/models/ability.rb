@@ -30,10 +30,12 @@ class Ability
     mark_best_ability
     destroy_links_ability
     show_user_awards_ability
+    vote_ability
 
     can :create, [Question, Answer, Comment]
     can %i[create destroy], QuestionSubscription
-    can %i[update destroy delete_file vote_up vote_down], [Question, Answer], author_id: user.id
+    can %i[update destroy delete_file], [Question, Answer], author_id: user.id
+
     can :me, User, id: user.id
   end
 
@@ -51,5 +53,11 @@ class Ability
 
   def show_user_awards_ability
     can :user_awards, Award if @params&.dig(:user_id).to_i == user.id
+  end
+
+  def vote_ability
+    can %i[vote_up vote_down], [Question, Answer] do |votable|
+      votable.author_id != user.id
+    end
   end
 end
