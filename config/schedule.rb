@@ -15,6 +15,8 @@
 #   rake "some:great:rake:task"
 # end
 #
+env :PATH, ENV['PATH']
+
 every 1.day do
   runner 'DailyDigestJob.perform_now'
 end
