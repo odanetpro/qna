@@ -4,6 +4,7 @@ $(document).on('turbolinks:load', function() {
 
     $(this).addClass('visually-hidden')
     $('.delete-question-link').addClass('visually-hidden')
+    $('.unsubscribe-question-link').addClass('visually-hidden')
     $('form#edit-question').removeClass('hidden')
 
     $('form#edit-question #question_files').prop('disabled', false)
