@@ -1,73 +1,75 @@
-div class = "question" id = "#{question.id}"
-  h1 class="py-3 border-bottom"
-    = question.title
+- cache question do
+  div class = "question" id = "#{question.id}"
+    h1 class="py-3 border-bottom"
+      = question.title
 
-  div class="parent"
-    div class="child align-top pe-4 pb-3"
-      div class="question-rating text-center py-3"
-        = render partial: 'shared/rating', locals: { votable: question }
+    div class="parent"
+      div class="child align-top pe-4 pb-3"
+        div class="question-rating text-center py-3"
+          = render partial: 'shared/rating', locals: { votable: question }
 
-    div class="child-max"
-      div id = "question-body" class="py-3 fs-3"
-        = question.body
-        
-      div class="question-attachments mt-3"
-        - if question.files.attached?
-          = render partial: 'questions/file', collection: question.files
+      div class="child-max"
+        div id = "question-body" class="py-3 fs-3"
+          = question.body
+          
+        div class="question-attachments mt-3"
+          - if question.files.attached?
+            = render partial: 'questions/file', collection: question.files
 
-      div class="question-links mt-3"
-        - if question.links.present?
-          ul class="list-unstyled"
-            = render partial: 'shared/link', collection: question.links
+        div class="question-links mt-3"
+          - if question.links.present?
+            ul class="list-unstyled"
+              = render partial: 'shared/link', collection: question.links
 
-      div class="question-award mt-3"
-        - if question.award.present?
-          p
-            b= 'Best answer award'
-          p
-            = image_tag question.award.image, size: 50
-            br
-            = question.award.name
+        div class="question-award mt-3"
+          - if question.award.present?
+            p
+              b= 'Best answer award'
+            p
+              = image_tag question.award.image, size: 50
+              br
+              = question.award.name
 
-      div class="question-controls mt-3"
-        div class="btn-group"
-          - if can?(:update, question) && can?(:destroy, question)
-            = link_to 'Edit', '#', class: 'edit-question-link btn btn-outline-secondary'
-            = link_to 'Delete',
-                      question_path(question),
-                      method: :delete,
-                      class: 'delete-question-link btn btn-outline-secondary',
-                      data: { confirm: t('.confirm') }
-          - if can?(:create, QuestionSubscription)
-            - if current_user.subscribed_for_question?(question)
-              = link_to 'Unsubscribe',
-                        unsubscribe_question_path(question),
+        div class="question-controls mt-3"
+          div class="btn-group"
+            - if can?(:update, question) && can?(:destroy, question)
+              = link_to 'Edit', '#', class: 'edit-question-link btn btn-outline-secondary'
+              = link_to 'Delete',
+                        question_path(question),
                         method: :delete,
-                        remote: true,
-                        class: 'unsubscribe-question-link btn btn-outline-secondary'
-            -else
-              = link_to 'Subscribe',
-                        subscribe_question_path(question),
-                        method: :post,
-                        remote: true,
-                        class: 'subscribe-question-link btn btn-outline-secondary'
+                        class: 'delete-question-link btn btn-outline-secondary',
+                        data: { confirm: t('.confirm') }
+            - if can?(:create, QuestionSubscription)
+              - if current_user.subscribed_for_question?(question)
+                = link_to 'Unsubscribe',
+                          unsubscribe_question_path(question),
+                          method: :delete,
+                          remote: true,
+                          class: 'unsubscribe-question-link btn btn-outline-secondary'
+              -else
+                = link_to 'Subscribe',
+                          subscribe_question_path(question),
+                          method: :post,
+                          remote: true,
+                          class: 'subscribe-question-link btn btn-outline-secondary'
 
-        .question-errors
+          .question-errors
 
-        .question-edit-form
-          = render partial: 'questions/edit_form'
-      
-      div class = "question-#{question.id}-comments mt-3"
-        - if question.comments.present?
-          = render partial: 'comments/comment', collection: question.comments
+          .question-edit-form
+            = render partial: 'questions/edit_form'
+        
+        div class = "question-#{question.id}-comments mt-3"
+          - if question.comments.present?
+            = render partial: 'comments/comment', collection: question.comments
 
-      - if user_signed_in?
-        = render partial: 'comments/form', locals: { commentable: question }
+        - if user_signed_in?
+          = render partial: 'comments/form', locals: { commentable: question }
 
-h5 class="mt-3"
-  | Answers
-ul class="answers list-unstyled"
-  = render partial: 'answers/best_answer', locals: { answer: best_answer } if question.best_answer_id
-  = render partial: 'answers/answer', collection: other_answers
+  h5 class="mt-3"
+    | Answers
+  ul class="answers list-unstyled"
+    = render partial: 'answers/best_answer', locals: { answer: best_answer } if question.best_answer_id
+    = render partial: 'answers/answer', collection: other_answers
 
-= render 'answers/form'
+- cache ['answers_form', question] do
+  = render 'answers/form'
