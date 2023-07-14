@@ -29,9 +29,9 @@ Technologies and dependencies:
 API:
 * Doorkeep authorization
 * Resources:
-  /api/v1/profiles/me - about me
-  /api/v1/questions/ - questions list
-  /api/v1/questions/:question_id/answers - answers for question
+  * /api/v1/profiles/me - about me
+  * /api/v1/questions/ - questions list
+  * /api/v1/questions/:question_id/answers - answers for question
 
 Tests:
 * Rspec, Shoulda-Matchers, FactoryBot, Capybara
