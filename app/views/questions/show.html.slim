@@ -10,7 +10,7 @@
 
       div class="child-max"
         div id = "question-body" class="py-3 fs-3"
-          = question.body
+          = simple_format(question.body)
           
         div class="question-attachments mt-3"
           - if question.files.attached?

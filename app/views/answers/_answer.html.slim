@@ -10,7 +10,7 @@ li class = "answer-#{answer.id} border-top pt-3"
 
       - cache answer do
         div id="answer-body-#{answer.id}" class="py-3 fs-5"
-          = answer.body
+          = simple_format(answer.body)
 
         div id="answer-attachments-#{answer.id}" class="mt-3"
           - if answer.files.attached?

@@ -75,7 +75,7 @@ function answerRating(answer, vote) {
 }
 
 function answerBody(answer) {
-  return `<div id="answer-body-${answer.id}" class="py-3 fs-5">${answer.body}</div>`
+  return `<div id="answer-body-${answer.id}" class="py-3 fs-5">${simpleFormat(answer.body)}</div>`
 }
 
 function answerFiles(answer, files) {

@@ -1,3 +1,3 @@
 div class="comment-body py-1 border-bottom mb-4" id="comment-#{comment.id}"
   - cache comment do
-    = comment.body
+    = simple_format(comment.body)
