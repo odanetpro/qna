@@ -21,6 +21,9 @@ require("@nathanvda/cocoon")
 require("underscore")
 require("vendor/gh3")
 
+import { simpleFormat } from "../utilities/simple_format"
+window.simpleFormat = simpleFormat
+
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
